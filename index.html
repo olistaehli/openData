@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVP</title>
+    <script src="js/d3.min.js"></script>
+    <script src="js/cartogram-chart.min.js"></script>
+</head>
+<body>
+    <div id="world"></div>
+
+    <script>
+
+        d3.queue()
+            .defer(d3.csv, "data/co2_emissionsInKt.csv")
+            .defer(d3.json, "map50.json")
+            .await(makeMap)
+       function makeMap(error, data, world) {
+            if (error) throw error;
+            console.log(world.objects.countries)
+
+            // exclude antarctica
+            world.objects.countries.geometries.splice(
+                world.objects.countries.geometries.findIndex(d => d.properties.ISO_A2 === 'AQ'),
+                1
+            );
+            
+            let min = Infinity
+            let max = -Infinity
+            
+            let total = 0, i;
+            data.forEach((data) => {
+                min = (+data["2013"] < min) ? +data["2013"] : min
+                max = (+data["2013"] > max) ? +data["2013"] : max
+                total+= +data["2013"]
+            })
+            let mean = total / data.length
+            console.warn(mean)
+
+            const colorScale = d3.scaleSequential(d3.interpolatePlasma)
+                .domain([min, max]);
+
+            let notMapped = {};
+            notMapped.data = [];
+            notMapped.countries = [];
+            
+            world.objects.countries.geometries.forEach((element) => {
+                data.forEach(data => {
+                    if (isTheSameCountry(data["country"], element.properties.name)) {
+                        element.properties.csvData = data["2013"]
+                    }
+                });
+                if (element.properties.csvData === undefined) {
+                    notMapped.countries.push(element.properties.name)
+                    element.properties.csvData = mean
+                }
+            });
+
+            world.objects.countries.geometries.forEach((element) => {
+                element.properties.newData = element.properties.name.length
+            });
+
+            data.forEach(data => {
+                let matched = false;
+                world.objects.countries.geometries.forEach((element) => {
+                    if (element.properties.name == data["country"]) {
+                        matched = true;
+                    }
+                })
+                if (!matched) {
+                    notMapped.data.push(data["country"]);
+                }
+            });
+
+            console.warn(notMapped)
+
+            let c = Cartogram()
+                .topoJson(world)
+                .topoObjectName('countries')
+                .value(getGDPPerCapita)
+                .color(f => colorScale(getGDPPerCapita(f)))
+                .label(({ properties: p }) => `GDP of ${p.name} (${p.ISO_A2})`)
+                .units(' per capita')
+                .valFormatter(d3.format('$,.0f'))
+                (document.getElementById('world'));
+            
+
+            //
+
+            function getGDPPerCapita({ properties: p }) {
+                return p.csvData;
+            }
+
+            function getNewData({ properties: p }) {
+                return p.newData;
+            }
+
+            function isTheSameCountry(dataName, jsonName) {
+                let map = {
+                    "United States": "United States of America",
+                    "Bosnia and Herzegovina": "Bosnia and Herz.",
+
+                }
+
+                if (dataName == jsonName) return true
+
+
+                return false
+            }
+        }
+    </script>
+
+
+</body>
+</html>
