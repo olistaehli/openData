@@ -1,13 +1,14 @@
 import {
     createQueue,
-    getDataById
+    getDataById,
+    getDataPoints
 } from './loadData.js'; 
 import { StateHandler } from './StateHandler.js';
 
 
 let cartogram;
 let world;
-let statePopover = document.getElementById('statePopover');
+let interval;
 
 //Register self as a delegate
 StateHandler.addStateCallback(()=>{
@@ -67,7 +68,6 @@ function initializeDropDown(data) {
 }
 
 function updateYearPicker() {
-    console.log(getDataById(StateHandler.getCurrentDisplayedDataset()).columns);
     let columns = getDataById(StateHandler.getCurrentDisplayedDataset()).columns;
     let dropdownMenu = document.getElementById('dropdown-menu-year');
     dropdownMenu.innerHTML = '';
@@ -82,6 +82,8 @@ function updateYearPicker() {
         };
         dropdownMenu.appendChild(element);
     })
+
+    showPlayAndStopButtons()
 }
 
 function getDataOfCountry({properties: p}) {
@@ -107,7 +109,7 @@ function changeDataSetTo(id) {
     .color((f) => colorScale(getDataOfCountry(f)))
     .units(selectedDatapointInformation.units)
     .valFormatter(d3.format(''))
-    .iterations(50);
+    .iterations(30);
 
     StateHandler.setState('Displaying the map', `Displaying the map for ${dataInformation.title} in the year ${currentDatapoint}`)
     
@@ -124,5 +126,42 @@ function changeDatapointTo(col) {
         .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
     cartogram.value(getDataOfCountry)
         .color((f) => colorScale(getDataOfCountry(f)))
-        .units(selectedDatapointInformation.units);
+        .units(selectedDatapointInformation.units)
+        .iterations(5);
+}
+
+function showPlayAndStopButtons() {
+    let animationController = d3.select('#animationController');
+    animationController.select("*").remove();
+    animationController.append('button')
+        .attr("type", "button")
+        .attr("class", "btn btn-success")
+        .text('Play')
+        .on("click", play);
+    animationController.append('button')
+        .attr("type", "button")
+        .attr("class", "btn btn-danger")
+        .text('Stop')
+        .on("click", stop);
+}
+
+function play() {
+    interval = setInterval(showNextDatapoint, 1000);
+}
+
+function showNextDatapoint() {
+    let currentDatapoint = StateHandler.getCurrentDisplayedDatapoint();
+    let currentData = StateHandler.getCurrentDisplayedDataset();
+    let allDatapoints = getDataPoints(getDataById(currentData));
+    let currentIndex = allDatapoints.indexOf(currentDatapoint);
+    console.log(currentIndex);
+    if (currentIndex + 1 < allDatapoints.length) {
+        changeDatapointTo(allDatapoints[currentIndex + 1]);
+    } else {
+        changeDatapointTo(allDatapoints[0]);
+    }
+}
+
+function stop() {
+    clearInterval(interval);
 }

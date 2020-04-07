@@ -6,7 +6,6 @@ let datasetsInformation = [
 ]
 
 let idToDataPoints = new Map();
-let data = [];
 let idToData = new Map();
 
 function createQueue(nextCallback) {
@@ -131,5 +130,5 @@ async function prepareData(nextCallback, error, world, ...readData) {
     nextCallback(error, world, ...readData);
 }
 
-export {createQueue, getDataById}
+export {createQueue, getDataById, getDataPoints}
 
