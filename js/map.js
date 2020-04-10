@@ -38,6 +38,8 @@ function mapWithoutData() {
     const colorScale = d3.scaleSequential(d3.interpolateTurbo)
     .domain([0, 1]);
 
+let width = d3.select("#world").node().getBoundingClientRect().width;
+let height = d3.select("#world").node().getBoundingClientRect().height;
 cartogram = Cartogram()
     .topoJson(world)
     .topoObjectName('countries')
@@ -46,19 +48,23 @@ cartogram = Cartogram()
     .valFormatter((n) => '')
     .label(({properties: p}) => `${p.NAME}`)
     .iterations(1)
+    .width(width)
+    .height(height)
     (document.getElementById('world'));
+
+    d3.select('#world').select('svg').call(d3.zoom().scaleExtent([0.25,8]).on("zoom", function() {
+        d3.select('#world').select('svg').selectAll('path').attr("transform", d3.event.transform);
+    }));
 }
-
-
 function initializeDropDown(data) {
     let datasets = data.map((data)=> {return data.information});
     let dropdownMenu = document.getElementById('dropdown-menu');
     dropdownMenu.innerHTML = '';
     datasets.forEach((dataset) => {
         // <a class="dropdown-item" href="#">Action</a>
-        let element = document.createElement('a');
+        let element = document.createElement('button');
         element.innerText = dataset.title;
-        element.href = "#"
+        element.type = 'button';
         element.classList.add('dropdown-item');
         element.onclick = () => {
             changeDataSetTo(dataset.id);
@@ -73,17 +79,15 @@ function updateYearPicker() {
     dropdownMenu.innerHTML = '';
     columns.forEach((col) => {
         // <a class="dropdown-item" href="#">Action</a>
-        let element = document.createElement('a');
+        let element = document.createElement('button');
         element.innerText = ''+col;
-        element.href = "#"
+        element.type = 'button';
         element.classList.add('dropdown-item');
         element.onclick = () => {
             changeDatapointTo(col);
         };
         dropdownMenu.appendChild(element);
     })
-
-    showPlayAndStopButtons()
 }
 
 function getDataOfCountry({properties: p}) {
@@ -134,21 +138,6 @@ function changeDatapointTo(col) {
         .valFormatter(n => n)
         .iterations(40);
         
-}
-
-function showPlayAndStopButtons() {
-    let animationController = d3.select('#animationController');
-    animationController.selectAll("*").remove();
-    animationController.append('button')
-        .attr("type", "button")
-        .attr("class", "btn btn-success")
-        .text('Play')
-        .on("click", play);
-    animationController.append('button')
-        .attr("type", "button")
-        .attr("class", "btn btn-danger")
-        .text('Stop')
-        .on("click", stop);
 }
 
 function play() {
