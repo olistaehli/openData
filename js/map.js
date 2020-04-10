@@ -96,7 +96,7 @@ function changeDataSetTo(id) {
     let selectedData = getDataById(id);
     let dataInformation = selectedData.information;
     if (selectedData.columns.indexOf(StateHandler.getCurrentDisplayedDatapoint()) == -1) {  
-        StateHandler.changeDisplayedDataset({dataset: dataInformation.id, datapoint: selectedData.columns[selectedData.columns.length -1]});
+        StateHandler.changeDisplayedDataset({dataset: dataInformation.id, datapoint: selectedData.columns[0]});
     }else {
         StateHandler.changeDisplayedDataset({dataset: dataInformation.id});
     }
@@ -105,11 +105,13 @@ function changeDataSetTo(id) {
     let selectedDatapointInformation = dataInformation[currentDatapoint];
     const colorScale = d3.scaleSequential(d3.interpolatePlasma)
     .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
-    cartogram.value(getDataOfCountry)
-    .color((f) => colorScale(getDataOfCountry(f)))
-    .units(selectedDatapointInformation.units)
-    .valFormatter(d3.format(''))
-    .iterations(30);
+    console.log(cartogram
+        .value((feature) => getDataOfCountry(feature))
+        .color((f) => colorScale(getDataOfCountry(f)))
+        .units(selectedDatapointInformation.units)
+        .label(({properties: p}) => `${p.NAME}`)
+        .valFormatter(n => n)
+        .iterations(40));
 
     StateHandler.setState('Displaying the map', `Displaying the map for ${dataInformation.title} in the year ${currentDatapoint}`)
     
@@ -124,15 +126,19 @@ function changeDatapointTo(col) {
     let selectedDatapointInformation = dataInformation[currentDatapoint];
     const colorScale = d3.scaleSequential(d3.interpolatePlasma)
         .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
-    cartogram.value(getDataOfCountry)
+        cartogram
+        .value((feature) => getDataOfCountry(feature))
         .color((f) => colorScale(getDataOfCountry(f)))
         .units(selectedDatapointInformation.units)
-        .iterations(5);
+        .label(({properties: p}) => `${p.NAME}`)
+        .valFormatter(n => n)
+        .iterations(40);
+        
 }
 
 function showPlayAndStopButtons() {
     let animationController = d3.select('#animationController');
-    animationController.select("*").remove();
+    animationController.selectAll("*").remove();
     animationController.append('button')
         .attr("type", "button")
         .attr("class", "btn btn-success")
@@ -146,7 +152,8 @@ function showPlayAndStopButtons() {
 }
 
 function play() {
-    interval = setInterval(showNextDatapoint, 1000);
+    if (interval !== undefined) clearInterval(interval);
+    interval = setInterval(showNextDatapoint, 2000)
 }
 
 function showNextDatapoint() {

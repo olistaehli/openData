@@ -1,6 +1,7 @@
 import { StateHandler } from "./StateHandler.js";
 
 let datasetsInformation = [
+    {"src":"../data/test-data.csv", "title":"TestDaten", "units":" Zahl", "id": "test"},
     {"src":"../data/co2_emissions_tonnes_per_person.csv", "title":"CO2 Emissions in tonnes per person", "units":" tonnes per capita", "id": "co2-t-per-capita"},
     {"src":"../data/co2_emissionsInKt.csv", "title":"CO2 Emissions in Kilotonnes", "units" : " Kilotonnes", "id": "co2-kt"}
 ]
@@ -36,13 +37,16 @@ function calculateMinMaxMean(dataPoint, data) {
     let min = Infinity;
     let max = -Infinity;
     let total = 0;
+    let numberOfElementsWithData = 0;
     data.forEach((line) => {
+        if (line[dataPoint] == "") return;
         min = (+line[dataPoint] < min) ? +line[dataPoint] : min;
         max = (+line[dataPoint] > max) ? +line[dataPoint] : max;
         total += +line[dataPoint];
+        numberOfElementsWithData++
     });
 
-    let mean = total / data.length;
+    let mean = total / numberOfElementsWithData;
 
     return {min, max, mean}
 }
@@ -53,8 +57,9 @@ function matchCountry(country, data, dataPoint) {
     data.forEach(data => {
         if (country.properties[datasetId] === undefined) country.properties[datasetId] = {};
         if (isTheSameCountry(data["country"], country.properties.NAME)) {
-            country.properties[datasetId][dataPoint] = {data: data[dataPoint], isFillValue: false};
-            
+            if (data[dataPoint] != "") {
+                country.properties[datasetId][dataPoint] = {data: data[dataPoint], isFillValue: false};
+            }
         }
     });
     if (country.properties[datasetId][dataPoint] === undefined) {
@@ -101,6 +106,7 @@ async function prepareData(nextCallback, error, world, ...readData) {
     for (let i = 0; i < readData.length; i++) {
         //Current file
         let data = readData[i];
+        console.log(data);
 
         //Current dataset information
         let dataset = datasetsInformation[i];
@@ -110,6 +116,7 @@ async function prepareData(nextCallback, error, world, ...readData) {
 
         //Get each year there is data for
         let dataPoints = getDataPoints(data);
+        console.log(dataPoints);
        
         dataPoints.forEach(dataPoint => {
             let {min, max, mean} = calculateMinMaxMean(dataPoint, data);
