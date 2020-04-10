@@ -146,7 +146,7 @@ function showPlayAndStopButtons() {
 }
 
 function play() {
-    interval = setInterval(showNextDatapoint, 1000);
+    interval = setInterval(showNextDatapoint, 100);
 }
 
 function showNextDatapoint() {
