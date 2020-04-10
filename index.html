@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVP</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="js/d3.min.js"></script>
+    <script src="js/cartogram-chart.min.js"></script>
+</head>
+
+<body>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span id="dropdown-text">Select Dataset</span>
+        </button>
+        <div id="dropdown-menu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">No</a>
+          <a class="dropdown-item" href="#">Data</a>
+          <a class="dropdown-item" href="#">Loaded yet</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="yearDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span id="dropdown-text-year">Select Year</span>
+        </button>
+        <div id="dropdown-menu-year" class="dropdown-menu" aria-labelledby="yearDropdownMenuButton">
+          <a class="dropdown-item" href="#">No</a>
+          <a class="dropdown-item" href="#">Data</a>
+          <a class="dropdown-item" href="#">Loaded yet</a>
+        </div>
+      </div>
+      <div id="animationController"></div>
+    <div id="world"></span></div>
+
+    <script src="js/map.js" type="module"></script>
+</body>
+</html>
