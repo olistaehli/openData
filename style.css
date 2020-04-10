@@ -1,0 +1,120 @@
+
+
+
+svg {
+    width: 100%;
+    height: 350px;
+}
+
+
+
+.circle {
+    fill: green;
+    cursor: pointer;
+}
+
+
+:root {
+    --darkblue-color:#17293E;
+    --blue-color:#2D4352;
+    --lightblue-color:#607379;
+    --darkbeige-color:#C2B6AE;
+    --beige-color:#E5D7D1;
+    --light-beige-color:#FAFAFA;
+}
+
+p {
+    font-weight: 100;
+    text-align: justify;
+}
+
+
+p, h1, h2, h3, h4, h5, h6 {
+    font-family: roboto;
+}
+
+h4 {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+
+.infobox {
+    background: var(--darkblue-color);
+    color: white;
+}
+.infobox p,a {
+    font-size: 14px;
+    color: white;
+}
+
+.exploreBox {
+    background: transparent;
+    color: white;
+}
+
+.databox {
+    background: var(--light-beige-color);
+}
+
+.storyBox {
+    background: var(--lightblue-color);
+    color: white;
+}
+
+h1, h4, h5, h6, h3 {
+    text-align: center
+}
+
+.grad {
+  background-image: linear-gradient(#17293E, #E5D7D1);
+}
+
+
+.hexagon {
+  position: relative;
+  width: 500px; 
+  height: 288.68px;
+  background-color: #30455d;
+  margin: 144.34px 0;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+
+.hexagon:before,
+.hexagon:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  width: 353.55px;
+  height: 353.55px;
+  -webkit-transform: scaleY(0.5774) rotate(-45deg);
+  -ms-transform: scaleY(0.5774) rotate(-45deg);
+  transform: scaleY(0.5774) rotate(-45deg);
+  background-color: inherit;
+  left: 73.2233px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+
+.hexagon:before {
+  top: -176.7767px;
+}
+
+.hexagon:after {
+  bottom: -176.7767px;
+}
+
+/*cover up extra shadows*/
+.hexagon span {
+  display: block;
+  position: absolute;
+  top:0px;
+  left: 0;
+  width:500px;
+  height:288.6751px;
+  z-index: 2;
+  background: inherit;
+}
+
+.worldformat{
+    height: 2000px;
+}

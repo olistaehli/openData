@@ -95,7 +95,7 @@ function getDataOfCountry({properties: p}) {
 function changeDataSetTo(id) {
     let selectedData = getDataById(id);
     let dataInformation = selectedData.information;
-    if (selectedData.columns.indexOf(StateHandler.getCurrentDisplayedDatapoint()) == -1) {  
+    if (selectedData.columns.indexOf(StateHandler.getCurrentDisplayedDatapoint()) == -1) {
         StateHandler.changeDisplayedDataset({dataset: dataInformation.id, datapoint: selectedData.columns[0]});
     }else {
         StateHandler.changeDisplayedDataset({dataset: dataInformation.id});
