@@ -96,7 +96,7 @@ function changeDataSetTo(id) {
     let selectedData = getDataById(id);
     let dataInformation = selectedData.information;
     if (selectedData.columns.indexOf(StateHandler.getCurrentDisplayedDatapoint()) == -1) {  
-        StateHandler.changeDisplayedDataset({dataset: dataInformation.id, datapoint: selectedData.columns[selectedData.columns.length -1]});
+        StateHandler.changeDisplayedDataset({dataset: dataInformation.id, datapoint: selectedData.columns[selectedData.columns.length -3]});
     }else {
         StateHandler.changeDisplayedDataset({dataset: dataInformation.id});
     }

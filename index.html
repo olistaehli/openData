@@ -155,7 +155,12 @@
                 </div>
             </div>
             
-            <h6 class="my-5">If you torture the data long enough, it will confess to anything. - Ronald Coase</h6>
+            <div>
+                <h6 class="my-5">“If you torture the data long enough, it will confess to anything. ― Ronald Coase</h6>
+                <h6 class="my-5">“I only believe in statistics that I doctored myself” ― Winston S. Churchill</h6>
+            </div>
+            
+            
             <h6 class="text-center">Please select a Stage</h6>
 
             <a data-toggle="modal" data-target="#exampleModalCenter"><img src="/assets/information.png" height="40px" width="40px"></a>
@@ -182,13 +187,15 @@
             </div>
 
             <div class="card py-5">
+                <h3>Country Name</h3>
+        
+                <div class"worldformat" id="world"></div>
+      
                 
-                <div width="40%" id="world"></div>
                 <div class="dropdown">
-                
-                <button class="btn dropdown-toggle" type="button" id="yearDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span id="dropdown-text-year">Select Year</span>
-                </button>
+                    <button class="btn dropdown-toggle" type="button" id="yearDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span id="dropdown-text-year">Select Year</span>
+                    </button>
                     
                 <div id="dropdown-menu-year" class="dropdown-menu" aria-labelledby="yearDropdownMenuButton">
                   <a class="dropdown-item" href="#">No</a>
@@ -196,7 +203,8 @@
                   <a class="dropdown-item" href="#">Loaded yet</a>
                 </div>
               </div>
-                <img src="/assets/play.png" height="40px" width="30px">
+                <button><img src="/assets/play.png" height="40px" width="30px"></button>
+                <button><img src="/assets/pause.png" height="40px" width="30px"></button>
                 <input type="range" class="px-5 custom-range" min="0" max="4" id="sliderRange">
               <div id="animationController"></div>
             </div>
