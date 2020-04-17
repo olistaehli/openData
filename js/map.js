@@ -3,12 +3,18 @@ import {
     getDataById,
     getDataPoints
 } from './loadData.js'; 
+import {
+    MapControls
+} from './MapControls.js';
 import { StateHandler } from './StateHandler.js';
 
 
 let cartogram;
 let world;
-let interval;
+let width = d3.select("#world").node().getBoundingClientRect().width;
+let height = d3.select("#world").node().getBoundingClientRect().height;
+
+let MapControl = new MapControls('#year-slider');
 
 //Register self as a delegate
 StateHandler.addStateCallback(()=>{
@@ -25,7 +31,6 @@ StateHandler.addDisplayInformationCallback(() => {
  */
 createQueue(showMap);
 
-
 function showMap(error, worldTopo, ...data) {
     StateHandler.setState('Displaying the map', 'Displaing a map without any data');
     world = worldTopo;
@@ -38,8 +43,7 @@ function mapWithoutData() {
     const colorScale = d3.scaleSequential(d3.interpolateTurbo)
     .domain([0, 1]);
 
-let width = d3.select("#world").node().getBoundingClientRect().width;
-let height = d3.select("#world").node().getBoundingClientRect().height;
+
 cartogram = Cartogram()
     .topoJson(world)
     .topoObjectName('countries')
@@ -61,7 +65,6 @@ function initializeDropDown(data) {
     let dropdownMenu = document.getElementById('dropdown-menu');
     dropdownMenu.innerHTML = '';
     datasets.forEach((dataset) => {
-        // <a class="dropdown-item" href="#">Action</a>
         let element = document.createElement('button');
         element.innerText = dataset.title;
         element.type = 'button';
@@ -75,19 +78,15 @@ function initializeDropDown(data) {
 
 function updateYearPicker() {
     let columns = getDataById(StateHandler.getCurrentDisplayedDataset()).columns;
-    let dropdownMenu = document.getElementById('dropdown-menu-year');
-    dropdownMenu.innerHTML = '';
-    columns.forEach((col) => {
-        // <a class="dropdown-item" href="#">Action</a>
-        let element = document.createElement('button');
-        element.innerText = ''+col;
-        element.type = 'button';
-        element.classList.add('dropdown-item');
-        element.onclick = () => {
-            changeDatapointTo(col);
-        };
-        dropdownMenu.appendChild(element);
-    })
+    MapControl.newSlider(columns,(col) =>  changeDatapointTo(col));
+    MapControl.newAnimationControlButtons({step: () => {
+        let currentDatapoint = StateHandler.getCurrentDisplayedDatapoint();
+        let index = columns.indexOf(currentDatapoint);
+        let nextIndex = (++index) < (columns.length) ? index : 0;
+        changeDatapointTo(columns[nextIndex]);
+    }, iterationsChange: (iterations) => {
+        cartogram.iterations(iterations);
+    }});
 }
 
 function getDataOfCountry({properties: p}) {
@@ -109,13 +108,13 @@ function changeDataSetTo(id) {
     let selectedDatapointInformation = dataInformation[currentDatapoint];
     const colorScale = d3.scaleSequential(d3.interpolatePlasma)
     .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
-    console.log(cartogram
+    cartogram
         .value((feature) => getDataOfCountry(feature))
         .color((f) => colorScale(getDataOfCountry(f)))
         .units(selectedDatapointInformation.units)
         .label(({properties: p}) => `${p.NAME}`)
         .valFormatter(n => n)
-        .iterations(40));
+        .iterations(60);
 
     StateHandler.setState('Displaying the map', `Displaying the map for ${dataInformation.title} in the year ${currentDatapoint}`)
     
@@ -130,34 +129,11 @@ function changeDatapointTo(col) {
     let selectedDatapointInformation = dataInformation[currentDatapoint];
     const colorScale = d3.scaleSequential(d3.interpolatePlasma)
         .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
-        cartogram
+    cartogram
         .value((feature) => getDataOfCountry(feature))
         .color((f) => colorScale(getDataOfCountry(f)))
         .units(selectedDatapointInformation.units)
         .label(({properties: p}) => `${p.NAME}`)
         .valFormatter(n => n)
-        .iterations(40);
-        
-}
-
-function play() {
-    if (interval !== undefined) clearInterval(interval);
-    interval = setInterval(showNextDatapoint, 2000)
-}
-
-function showNextDatapoint() {
-    let currentDatapoint = StateHandler.getCurrentDisplayedDatapoint();
-    let currentData = StateHandler.getCurrentDisplayedDataset();
-    let allDatapoints = getDataPoints(getDataById(currentData));
-    let currentIndex = allDatapoints.indexOf(currentDatapoint);
-    console.log(currentIndex);
-    if (currentIndex + 1 < allDatapoints.length) {
-        changeDatapointTo(allDatapoints[currentIndex + 1]);
-    } else {
-        changeDatapointTo(allDatapoints[0]);
-    }
-}
-
-function stop() {
-    clearInterval(interval);
+        .iterations(40, 800);
 }
