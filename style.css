@@ -108,3 +108,29 @@ h1, h4, h5, h6, h3 {
 .worldformat{
     height: 400px;
 }
+
+.quote {
+    font-size: 22px;
+    text-align: center;
+    padding: 30px;
+}
+
+.purpleGradient{
+    background: rgb(9,9,121);
+background: linear-gradient(0deg, rgba(9,9,121,1) 0%, rgba(142,36,170,1) 42%);
+}
+
+.redGradient{
+    background: rgb(102,2,2);
+background: linear-gradient(0deg, rgba(102,2,2,1) 0%, rgba(183,28,28,1) 49%);
+}
+
+.greenGradient{
+    background: rgb(23,97,26);
+background: linear-gradient(0deg, rgba(23,97,26,1) 0%, rgba(67,160,71,1) 49%);
+}
+
+.orangeGradient{
+    background: rgb(198,84,0);
+    background: linear-gradient(0deg, rgba(198,84,0,1) 0%, rgba(255,179,0,1) 49%);
+}
