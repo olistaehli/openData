@@ -54,14 +54,39 @@
         <p class=pt-5>This visualization was created by two students during the Open Data lecture. The project was conducted without a data coach. We use the data from gapminder.com, a portal that promotes factual education of the population through data. With our visualization we show how countries compare to each other in terms of greenhouse gas emissions. The most interesting thing is that it always depends on how you look at the data. For greenhouse gases in absolute numbers, the most populous country is of course the most populous, China is the worst. But when you look at the figures per inhabitant, the picture looks very different. Rich countries like Switzerland, for example, are no longer in a good position. If you now look at the whole per capita figure in terms of gross domestic product, the rich countries are in a good position again. Our conclusion from this project is that data can always be chosen in a way that serves the purpose or argument that is needed.
         </p>
 
-        <div class="row pt-5">
-            <div class="exploreBox col pb-5">
-                <div class="hexagon p-5">
-                    <span class="p-5">
-                    <h5>Greenhouse Gas Emissions by Type</h5>
-                        <div class="text-center">
+        <div class="mobiledisplay">
+            <a href="#emissionType">
+                <div class="p-5 my-3" style="background: #2D4352;"> 
+                    <div class="pb-2  text-center">
                             <img src="/assets/typeWhite.png" height="60px" width="50px">    
                         </div>
+                    <h4 style="color: white;"> Explore Greenhouse Gas Emissions by Type</h4>  
+                </div>
+            </a>
+            <a href="#emissionCountry">
+                <div class="p-5 my-3" style="background: #2D4352;">
+                    <div class="pb-2 text-center">
+                            <img src="/assets/countryWhite.png" height="60px" width="50px">    
+                        </div>
+                    <h4 style="color: white;">Explore Greenhouse Gas Emission by Country</h4>
+                </div>
+            </a>
+            
+            
+        
+        
+        </div>
+        
+        
+        <div class="row pt-5 m-auto hexagondisplay">
+            <div class="exploreBox col pb-5">
+                <div class="hexagon p-5 mx-auto">
+                    <span class="p-5">
+                        <div class="pb-2  text-center">
+                            <img src="/assets/typeWhite.png" height="60px" width="50px">    
+                        </div>
+                    <h4>Greenhouse Gas Emissions by Type</h4>
+                        
                     <p>
                         Click here to explore an interactive dynamic world map which shows differenet categories of greenhouse gas emissions.
                     </p>
@@ -71,12 +96,13 @@
                 </div>
             </div>
             <div class="exploreBox col">
-                <div class="hexagon p-5">
-                    <span class="p-5">
-                    <h5>Greenhouse Gas Emission by Country</h5>
-                        <div class="text-center">
+                <div class="hexagon p-5 mx-auto">
+                    <span class="py-2 px-5">
+                        <div class="pb-2 text-center">
                             <img src="/assets/countryWhite.png" height="60px" width="50px">    
                         </div>
+                    <h4>Greenhouse Gas Emission by Country</h4>
+                        
                     <p>
                         Click here to explore an interactive dynamic world map which shows you how well a specific country performs. You can analze their best and worst greenhouse gas emission category. In addition to that you can distort the visualization to represent the country at its absolute worst or best.
                     </p>
@@ -88,16 +114,9 @@
         </div>
 
         <div class="p-4 mt-5 card databox" id="emissionType">
-            <div class="row text-center py-3">
-                <div class="col-2"></div>
-                <div class="col-1">
+            <div class="m-auto row py-3 align-items-center">
                     <img src="/assets/typeColor.png" height="60px" width="50px">
-                </div>
-
-                <div class="col-7">
-                    <h2>CO2-Emission by Type</h2>
-                </div>
-                <div class="col-2"></div>
+                    <h2>&nbsp &nbsp CO2-Emission by Type</h2>
             </div>
             <p>
                 This interactive visualization serves to understand that different countries score very differently compared to each other when considering different forms and perspectives of greenhouse gas emissions
@@ -131,15 +150,12 @@
         </div>
         <div class="p-4 mt-5 card databox" id="emissionCountry">
 
-            <div class="text-center row py-3">
-                <div class="col-2"></div>
-                <div class="col-1">
-                    <img src="/assets/countryColor.png" height="60px" width="50px">
-                </div>
-                <div class="col-7">
-                    <h2>CO2-Emission by Country</h2>
-                </div>
-                <div class="col-2"></div>
+            <div class="m-auto row py-3 align-items-center">
+                <img src="/assets/countryColor.png" height="60px" width="50px">
+                <h2>&nbsp &nbsp CO2-Emission by Country</h2>
+                    
+                    
+                    
             </div>
             <p>
                 With this visualization we want to draw attention to the manipulability of data. To look good, you just have to take the right data and display it correctly (or incorrectly). Or as Ronald Coase put it more appropriately: <br> 
@@ -157,14 +173,7 @@
                 Please choose any country and you will see the difference it can make when picking certain data and displaying it in a certain way. Adjust the slider below and see what happens.
             </p>
             
-            
-            
-            
-                
-
-              
-            
-            
+        
             <div class="text-center dropdown my-5">
                 <h6>Please choose a Country</h6>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -270,7 +279,7 @@
                     <h6>Like</h6>
                     <p>
                         <b>"Just reported that the United States has done far more “testing” than any other nation, by far! In fact, over an eight day span, the United States now does more testing than what South Korea (which has been a very successful tester) does over an eight week span. Great job!"</b>
-                        Donald Trump mentioned the absolute number and not the number per capita, which makes the six times more populous USA much better off than it actually is. (Example good)    
+                        Donald Trump mentioned the absolute number and not the number per capita, which makes the six times more populous USA much better off than it actually is. 
                     </p>
 
                 </div>
@@ -283,7 +292,7 @@
                     <h6>Unicorn</h6>
                     <p>
                         <b>In 2000, a new food "invented" by Kim Jong-il called "Gogigyeopbbang" was introduced to North Koreans. It was described as "double bread with meat", but took on the uncanny appearance of a conventional hamburger.</b>
-                        The North Korean excluded all other countries from this 'statistic'. (Example - best)
+                        The North Korean excluded all other countries from this 'statistic'. 
                     </p>
 
                 </div>
