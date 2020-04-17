@@ -38,6 +38,7 @@ class StateHandler {
 
     static addStateCallback(callback) {
         StateHandler.stateChangedCallbacks.push(callback);
+        return callback
     }
 
     static removeStateCallback(callback) {
@@ -46,6 +47,7 @@ class StateHandler {
 
     static addDisplayInformationCallback(callback) {
         StateHandler.displayInformationCallbacks.push(callback);
+        return callback
     }
 
     static removeDisplayInformationCallback(callback) {
