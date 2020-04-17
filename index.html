@@ -6,23 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Greenhouse Gas Emissions</title>
 
-    <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="assets/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="assets/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="assets/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="assets/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="assets/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
-    <link rel="manifest" href="assets/favicon/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
+    <link href="/assets/favicon.ico" rel="shortcut icon" type="image/png"/>
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
@@ -35,8 +19,18 @@
 </head>
     
 <body>
-    <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1"><b>Open Data Showroom</b> - Adrian Joerg, Olivier Staehli</span>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#"><b>Greenhouse Gas Emissions</b></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="#emissionType">Emissions by Type</a>
+          <a class="nav-item nav-link" href="#emissionCountry">Emissions by Country</a>
+            <a class="nav-item nav-link" href="#data">Data</a>
+        </div>
+      </div>
     </nav>
 
     <div class="pt-5 container">
@@ -45,14 +39,39 @@
         <p class=pt-5>This visualization was created by two students during the Open Data lecture. The project was conducted without a data coach. We use the data from gapminder.com, a portal that promotes factual education of the population through data. With our visualization we show how countries compare to each other in terms of greenhouse gas emissions. The most interesting thing is that it always depends on how you look at the data. For greenhouse gases in absolute numbers, the most populous country is of course the most populous, China is the worst. But when you look at the figures per inhabitant, the picture looks very different. Rich countries like Switzerland, for example, are no longer in a good position. If you now look at the whole per capita figure in terms of gross domestic product, the rich countries are in a good position again. Our conclusion from this project is that data can always be chosen in a way that serves the purpose or argument that is needed.
         </p>
 
-        <div class="row pt-5">
-            <div class="exploreBox col">
-                <div class="hexagon p-5">
-                    <span class="p-5">
-                    <h5>Greenhouse Gas Emissions by Type</h5>
-                        <div class="text-center">
+        <div class="mobiledisplay">
+            <a href="#emissionType">
+                <div class="p-5 my-3" style="background: #2D4352;"> 
+                    <div class="pb-2  text-center">
                             <img src="/assets/typeWhite.png" height="60px" width="50px">    
                         </div>
+                    <h4 style="color: white;"> Explore Greenhouse Gas Emissions by Type</h4>  
+                </div>
+            </a>
+            <a href="#emissionCountry">
+                <div class="p-5 my-3" style="background: #2D4352;">
+                    <div class="pb-2 text-center">
+                            <img src="/assets/countryWhite.png" height="60px" width="50px">    
+                        </div>
+                    <h4 style="color: white;">Explore Greenhouse Gas Emission by Country</h4>
+                </div>
+            </a>
+            
+            
+        
+        
+        </div>
+        
+        
+        <div class="row pt-5 m-auto hexagondisplay">
+            <div class="exploreBox col pb-5">
+                <div class="hexagon p-5 mx-auto">
+                    <span class="p-5">
+                        <div class="pb-2  text-center">
+                            <img src="/assets/typeWhite.png" height="60px" width="50px">    
+                        </div>
+                    <h4>Greenhouse Gas Emissions by Type</h4>
+                        
                     <p>
                         Click here to explore an interactive dynamic world map which shows differenet categories of greenhouse gas emissions.
                     </p>
@@ -62,12 +81,13 @@
                 </div>
             </div>
             <div class="exploreBox col">
-                <div class="hexagon p-5">
-                    <span class="p-5">
-                    <h5>Greenhouse Gas Emission by Country</h5>
-                        <div class="text-center">
+                <div class="hexagon p-5 mx-auto">
+                    <span class="py-2 px-5">
+                        <div class="pb-2 text-center">
                             <img src="/assets/countryWhite.png" height="60px" width="50px">    
                         </div>
+                    <h4>Greenhouse Gas Emission by Country</h4>
+                        
                     <p>
                         Click here to explore an interactive dynamic world map which shows you how well a specific country performs. You can analze their best and worst greenhouse gas emission category. In addition to that you can distort the visualization to represent the country at its absolute worst or best.
                     </p>
@@ -79,19 +99,12 @@
         </div>
 
         <div class="p-4 mt-5 card databox" id="emissionType">
-            <div class="row text-center py-3">
-                <div class="col-2"></div>
-                <div class="col-1">
+            <div class="m-auto row py-3 align-items-center">
                     <img src="/assets/typeColor.png" height="60px" width="50px">
-                </div>
-
-                <div class="col-7">
-                    <h2>CO2-Emission by Type</h2>
-                </div>
-                <div class="col-2"></div>
+                    <h2>&nbsp &nbsp CO2-Emission by Type</h2>
             </div>
             <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                This interactive visualization serves to understand that different countries score very differently compared to each other when considering different forms and perspectives of greenhouse gas emissions
             </p>
 
             <div class="text-center dropdown py-5">
@@ -113,36 +126,39 @@
             </div>
         </div>
 
-        <div class="infobox p-4 my-3 card">
+        <div id="data" class="infobox p-4 my-3 card">
             <h5>Information about data</h5>
-            <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            <p> We got our data from the world famous portal for data, Gapminder.com This platform is from bestselling author Hans Rosling.
+                
+                <a href="https://www.gapminder.org/data/">Link to the data</a>
             </p>
         </div>
         <div class="p-4 mt-5 card databox" id="emissionCountry">
 
-            <div class="text-center row py-3">
-                <div class="col-2"></div>
-                <div class="col-1">
-                    <img src="/assets/countryColor.png" height="60px" width="50px">
-                </div>
-                <div class="col-7">
-                    <h2>CO2-Emission by Country</h2>
-                </div>
-                <div class="col-2"></div>
+            <div class="m-auto row py-3 align-items-center">
+                <img src="/assets/countryColor.png" height="60px" width="50px">
+                <h2>&nbsp &nbsp CO2-Emission by Country</h2>
+                    
+                    
+                    
             </div>
             <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                With this visualization we want to draw attention to the manipulability of data. To look good, you just have to take the right data and display it correctly (or incorrectly). Or as Ronald Coase put it more appropriately: <br> 
+            </p>
+            <span class="quote">
+                <b>“If you torture the data long enough, it will confess to anything."</b>
+            </span>
+            <p>
+                With this tool we strongly recommend the well-known statement of Winston S. Churchill:
+            </p>  
+            <span class="quote">
+                <b>“I only believe in statistics that I doctored myself”.</b> 
+            </span>
+            <p>
+                Please choose any country and you will see the difference it can make when picking certain data and displaying it in a certain way. Adjust the slider below and see what happens.
             </p>
             
-            
-            
-            
-                
-
-              
-            
-            
+        
             <div class="text-center dropdown my-5">
                 <h6>Please choose a Country</h6>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -155,11 +171,7 @@
                 </div>
             </div>
             
-            <div>
-                <h6 class="my-5">“If you torture the data long enough, it will confess to anything. ― Ronald Coase</h6>
-                <h6 class="my-5">“I only believe in statistics that I doctored myself” ― Winston S. Churchill</h6>
-            </div>
-            
+           
             
             <h6 class="text-center">Please select a Stage</h6>
 
@@ -169,19 +181,19 @@
 
             <div class="text-center row mt-3 mb-5">
                 <div class="col">
-                    <img src="/assets/worst.png" height="40px" width="40px">
+                    <img src="/assets/worst.png" height="50px" width="50px">
                 </div>
                 <div class="col">
-                    <img src="/assets/bad.png" height="40px" width="40px">
+                    <img src="/assets/bad.png" height="50px" width="50px">
                 </div>
                 <div class="col">
-                    <img src="/assets/neutral.png" height="40px" width="40px">
+                    <img src="/assets/neutral.png" height="45px" width="45px">
                 </div>
                 <div class="col">
-                    <img src="/assets/good.png" height="40px" width="40px">
+                    <img src="/assets/good.png" height="50px" width="50px">
                 </div>
                 <div class="col">
-                    <img src="/assets/best.png" height="40px" width="40px">
+                    <img src="/assets/best.png" height="50px" width="50px">
                 </div>
 
             </div>
@@ -197,47 +209,64 @@
                 <div class="px-5" id="year-slider">
             </div>
             
-            <h3 class="mt-5">Here are four stories why data manupulation is important</h3>
+            <h3 class="mt-5">Here are four stories that represent each of the above categories.</h3>
             <div class="row mt-2">
-                <div class="card storyBox col p-4 m-2">
+                
+                <div class="redGradient card storyBox col p-4 m-2">
                     <div class="text-center">
                         <img src="/assets/trump.png" height="60px" width="50px">
                     </div>
-                    <h5>Donald Trump</h5>
+                    <h5>Immigration</h5>
+                    
                     <p>
-                        <b>"Just reported that the United States has done far more “testing” than any other nation, by far! In fact, over an eight day span, the United States now does more testing than what South Korea (which has been a very successful tester) does over an eight week span. Great job!"</b>
-                        Donald Trump mentioned the absolute number and not the number per capita, which makes the six times more populous USA much better off than it actually is. (Example good)    
+                        <b><br>"3,775 known or suspected terrorists [were] prevented from traveling or entering the U.S. by DHS</b>
+                        This statement is an overestimation in general. Furthermore, they combined known and suspect terrorists which does not answer the question who qualifies for a suspected terrorists. The large numer does suggest that they included ethnicities as suspected terrorists.
                     </p>
 
                 </div>
-                <div class="card storyBox col p-4 m-2">
+
+                <div class="w-100 d-block d-sm-block d-md-none"></div>
+                
+                <div  class="orangeGradient card storyBox col p-4 m-2">
                     <div class="text-center">
-                        <img src="/assets/castro.png" height="60px" width="50px">
+                        <img src="/assets/trump.png" height="60px" width="50px">
                     </div>
-                    <h5>Fidel Castro</h5>
+                    <h5>MISSING</h5>
+                    
                     <p>
-                        dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                        <b><br>dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</b>
                     </p>
 
                 </div>
-                <div class="card storyBox col p-4 m-2">
+                
+                
+                <div class="w-100 d-block d-sm-block d-md-none"></div>
+                <div class="w-100 d-none d-md-block d-lg-none"></div>
+                
+                
+                
+                <div  class="greenGradient card storyBox col p-4 m-2">
                     <div class="text-center">
-                        <img src="/assets/jongun.png" height="60px" width="50px">
+                        <img src="/assets/trump.png" height="60px" width="50px">
                     </div>
-                    <h5>Kim Jong-Il</h5>
+                    <h5>Corona Virus</h5>
+                    
                     <p>
-                        <b>In 2000, a new food "invented" by Kim Jong-il called "Gogigyeopbbang" was introduced to North Koreans. It was described as "double bread with meat", but took on the uncanny appearance of a conventional hamburger.</b>
-                        The North Korean excluded all other countries from this 'statistic'. (Example - best)
+                        <b><br>"Just reported that the United States has done far more “testing” than any other nation, by far! In fact, over an eight day span, the United States now does more testing than what South Korea (which has been a very successful tester) does over an eight week span. Great job!"</b>
+                        Donald Trump mentioned the absolute number and not the number per capita, which makes the six times more populous USA much better off than it actually is. 
                     </p>
 
                 </div>
-                <div class="card storyBox col p-4 m-2">
+                <div class="w-100 d-block d-sm-block d-md-none"></div>
+                <div  class="purpleGradient card storyBox col p-4 m-2">
                     <div class="text-center">
-                        <img src="/assets/pope.png" height="60px" width="50px">
+                        <img src="/assets/trump.png" height="60px" width="50px">
                     </div>
-                    <h5>Pope</h5>
+                    <h5>Inauguration</h5>
+                   
                     <p>
-                        dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                        <b><br>"We had a massive field of people," Trump said. "You saw that — packed. I get up this morning, I turn on one of the networks and they show an empty field. I said wait a minute, I made a speech. I looked out the field was, it looked like a million, a million and a half people, they showed a field where there was practically nobody standing there."</b>
+                        
                     </p>
 
                 </div>
@@ -252,6 +281,7 @@
                 <a href="https://www.gapminder.org/data/">Link to the data</a>
             </p>
         </div>
+                
         <p><b>Creators:</b> Adrian Joerg (<a style="color: black;" href="mailto:adrian.joerg@students.unibe.ch">adrian.joerg@students.unibe.ch</a>), Olivier Staehli (<a style="color: black;" href="mailto:adrian.joerg@students.unibe.ch">olivier.staehli@students.unibe.ch</a>)</p>
     </div>
 
@@ -266,11 +296,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Worst: xyz</p>
-                    <p>Bad: xyz</p>
-                    <p>Neutral: xyz</p>
-                    <p>Good: xyz</p>
-                    <p>Best: xyz</p>
+                    <p><b>Devil:</b> We took the data from the category 'bad' and manipulated it with statistical tricks (e.g. exchanged scale from linear to logarithmic) to make it look worse.</p>
+                    <p><b>Dislike:</b> This shows the category where the selected country is performing the worst.</p>
+                    <p><b>Neutral:</b> This shows the greenhose-gas emissions as ethically correct as we were able to present it, according to our understanding.</p>
+                    <p><b>Like:</b> This shows the category where the selected country is performing the best.</p>
+                    <p><b>Unicorn:</b> We took the data from the category 'good' and manipulated it with statistical tricks (e.g. exchanged scale from linear to logarithmic) to make it look better.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

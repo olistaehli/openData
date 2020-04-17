@@ -60,6 +60,16 @@ h1, h4, h5, h6, h3 {
   background-image: linear-gradient(#17293E, #E5D7D1);
 }
 
+@media only screen and (max-width: 600px) {
+    .hexagondisplay{
+        display: none;
+    }   
+}
+@media only screen and (min-width: 600px) {
+    .mobiledisplay{
+        display: none;
+    }   
+}
 
 .hexagon {
   position: relative;
@@ -105,8 +115,21 @@ h1, h4, h5, h6, h3 {
   background: inherit;
 }
 
+
 .worldformat{
     height: 400px;
+    overflow: hidden;
+}
+
+.quote {
+    font-size: 22px;
+    text-align: center;
+    padding: 30px;
+}
+
+.purpleGradient{
+    background: rgb(9,9,121);
+background: linear-gradient(0deg, rgba(9,9,121,1) 0%, rgba(142,36,170,1) 42%);
 }
 
 .animation-control {
