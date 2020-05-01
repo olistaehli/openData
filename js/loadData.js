@@ -1,22 +1,32 @@
 import { StateHandler } from "./StateHandler.js";
 
 let datasetsInformation = [
-    {"src":"../data/test-data.csv", "title":"TestDaten", "units":" Zahl", "id": "test"},
     {"src":"../data/co2_emissions_tonnes_per_person.csv", "title":"CO2 Emissions in tonnes per person", "units":" tonnes per capita", "id": "co2-t-per-capita"},
     {"src":"../data/co2_emissionsInKt.csv", "title":"CO2 Emissions in Kilotonnes", "units" : " Kilotonnes", "id": "co2-kt"}
 ]
 
 let idToDataPoints = new Map();
 let idToData = new Map();
+let world;
 
-function createQueue(nextCallback) {
-    StateHandler.setState('Loading Data', `Loading the map and ${datasetsInformation.length} Datasets`);
+
+function loadEmptyMap(nextCallback) {
+    StateHandler.setState('Loading Data', `Loading the map`);
     let queue = d3.queue();
     queue.defer(d3.json, "../map.json")
+    queue.await((error, worldLoaded) => {
+        world = worldLoaded
+        prepareData(nextCallback, error, world);
+    });
+}
+
+function createQueue(nextCallback) {
+    StateHandler.setState('Loading Data', `Loading ${datasetsInformation.length} Datasets`);
+    let queue = d3.queue();
     datasetsInformation.forEach((dataset) => {
         queue.defer(d3.csv, dataset.src)
     });
-    queue.await((error, world, ...data) => {prepareData(nextCallback, error, world, ...data);});
+    queue.await((error, ...data) => {prepareData(nextCallback, error, world, ...data);});
 }
 
 function getDataById(id) {
@@ -137,5 +147,5 @@ async function prepareData(nextCallback, error, world, ...readData) {
     nextCallback(error, world, ...readData);
 }
 
-export {createQueue, getDataById, getDataPoints}
+export {createQueue, loadEmptyMap, getDataById, getDataPoints}
 

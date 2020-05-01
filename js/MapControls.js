@@ -1,14 +1,16 @@
 import { StateHandler } from './StateHandler.js';
 class MapControls {
     
-    constructor(element) {
+    constructor(element, stateHandlerIdentifier) {
         this.element = element
         this.animationDelay = 2000;
 
+        this.stateHandler = StateHandler.getStateHandler(stateHandlerIdentifier);
+
         this.sliderSVG = this.createSliderSVG(this.element)
-        this.statehandlerCallback = StateHandler.addDisplayInformationCallback(()=>{
+        this.statehandlerCallback = this.stateHandler.addDisplayInformationCallback(()=>{
             if (this.slider !== undefined && this.dataPoints !== undefined) {
-                let newDataPoint = StateHandler.getCurrentDisplayedDatapoint();
+                let newDataPoint = this.stateHandler.getCurrentDisplayedDatapoint();
                 let index = this.dataPoints.indexOf(newDataPoint);
                 if (index >= 0) this.slider.silentValue(index)
             }

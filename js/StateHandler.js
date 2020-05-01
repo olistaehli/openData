@@ -1,73 +1,92 @@
 class StateHandler {
+    constructor() {
+        this.state = "";
+        this.stateDescription = "";
+        this.stateChangedCallbacks = [];
+        this.displayInformationCallbacks = [];
+        this.currentDataset;
+        this.currentDatapoint;
+    }
 
-    constructor() {}
+    static getNewStateHandler(identifier) {
+        StateHandler.identifiers.push(identifier);
+        let stateHandler = new StateHandler();
+        StateHandler.stateHandlers[identifier] = stateHandler;
+        return stateHandler;
+    }
+
+    static getStateHandler(identifier) {
+        return StateHandler.stateHandlers[identifier];
+    }
 
     static setState(state, stateDescription) {
-        StateHandler.state = state;
-        StateHandler.stateDescription = stateDescription;
-        StateHandler.stateChangedCallbacks.forEach((callback) => {
+        StateHandler.identifiers.forEach(identifier => {
+            StateHandler.stateHandlers[identifier].setState(state, stateDescription);
+        });
+    }
+
+    setState(state, stateDescription) {
+        this,state = state;
+        this.stateDescription = stateDescription;
+        this.stateChangedCallbacks.forEach((callback) => {
             callback();
         });
     }
 
-    static getState() {
-        return StateHandler.state;
+    getState() {
+        return this.state;
     }
 
-    static getStateDescription() {
-        return StateHandler.stateDescription;
+    getStateDescription() {
+        return this.stateDescription;
     }
 
-    static changeDisplayedDataset({dataset, datapoint}) {
-        console.log(dataset, datapoint);
+    changeDisplayedDataset({dataset, datapoint}) {
         let changed = false;
         if (dataset !== undefined) {
-            StateHandler.currentDataset = dataset;
+            this.currentDataset = dataset;
             changed = true
         }
         if (datapoint !== undefined) {
-            StateHandler.currentDatapoint = datapoint;
+            this.currentDatapoint = datapoint;
             changed = true 
         }
         if (changed && this.displayInformationCallbacks.length > 0) {
-            StateHandler.displayInformationCallbacks.forEach((callback) => {
+            this.displayInformationCallbacks.forEach((callback) => {
                 callback();
             });
         }
     }
 
-    static addStateCallback(callback) {
-        StateHandler.stateChangedCallbacks.push(callback);
+    addStateCallback(callback) {
+        this.stateChangedCallbacks.push(callback);
         return callback
     }
 
-    static removeStateCallback(callback) {
-        StateHandler.stateChangedCallbacks.filter((element) => {return callback != element});
+    removeStateCallback(callback) {
+        this.stateChangedCallbacks.filter((element) => {return callback != element});
     }
 
-    static addDisplayInformationCallback(callback) {
-        StateHandler.displayInformationCallbacks.push(callback);
+    addDisplayInformationCallback(callback) {
+        this.displayInformationCallbacks.push(callback);
         return callback
     }
 
-    static removeDisplayInformationCallback(callback) {
-        StateHandler.displayInformationCallbacks.filter((element) => {return callback != element});
+    removeDisplayInformationCallback(callback) {
+        this.displayInformationCallbacks.filter((element) => {return callback != element});
     }
 
-    static getCurrentDisplayedDataset() {
-        return StateHandler.currentDataset;
+    getCurrentDisplayedDataset() {
+        return this.currentDataset;
     }
 
-    static getCurrentDisplayedDatapoint() {
-        return StateHandler.currentDatapoint;
+    getCurrentDisplayedDatapoint() {
+        return this.currentDatapoint;
     }
 }
 
-StateHandler.state = "";
-StateHandler.stateDescription = "";
-StateHandler.stateChangedCallbacks = [];
-StateHandler.displayInformationCallbacks = [];
-StateHandler.currentDataset;
-StateHandler.currentDatapoint;
+StateHandler.stateHandlers = {};
+StateHandler.identifiers = [];
+
 
 export {StateHandler}

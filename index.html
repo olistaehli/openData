@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Greenhouse Gas Emissions</title>
 
-    <link href="/assets/favicon.ico" rel="shortcut icon" type="image/png"/>
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="/assets/favicon.ico" rel="shortcut icon" type="image/png" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
@@ -17,66 +18,78 @@
     <script src="js/cartogram-chart.min.js"></script>
     <script src="https://unpkg.com/d3-simple-slider"></script>
 </head>
-    
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#"><b>Greenhouse Gas Emissions</b></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-item nav-link" href="#emissionType">Emissions by Type</a>
-          <a class="nav-item nav-link" href="#emissionCountry">Emissions by Country</a>
-            <a class="nav-item nav-link" href="#data">Data</a>
+        <a class="navbar-brand" href="#"><b>Greenhouse Gas Emissions</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="#emissionType">Emissions by Type</a>
+                <a class="nav-item nav-link" href="#emissionCountry">Emissions by Country</a>
+                <a class="nav-item nav-link" href="#data">Data</a>
+            </div>
         </div>
-      </div>
     </nav>
 
     <div class="pt-5 container">
         <h1>Greenhouse Gas Emissions</h1>
         <h4>A Semester Project in the open data lecture</h4>
-        <p class=pt-5>This visualization was created by two students during the Open Data lecture. The project was conducted without a data coach. We use the data from gapminder.com, a portal that promotes factual education of the population through data. With our visualization we show how countries compare to each other in terms of greenhouse gas emissions. The most interesting thing is that it always depends on how you look at the data. For greenhouse gases in absolute numbers, the most populous country is of course the most populous, China is the worst. But when you look at the figures per inhabitant, the picture looks very different. Rich countries like Switzerland, for example, are no longer in a good position. If you now look at the whole per capita figure in terms of gross domestic product, the rich countries are in a good position again. Our conclusion from this project is that data can always be chosen in a way that serves the purpose or argument that is needed.
+        <p class=pt-5>This visualization was created by two students during the Open Data lecture. The project was
+            conducted without a data coach. We use the data from gapminder.com, a portal that promotes factual education
+            of the population through data. With our visualization we show how countries compare to each other in terms
+            of greenhouse gas emissions. The most interesting thing is that it always depends on how you look at the
+            data. For greenhouse gases in absolute numbers, the most populous country is of course the most populous,
+            China is the worst. But when you look at the figures per inhabitant, the picture looks very different. Rich
+            countries like Switzerland, for example, are no longer in a good position. If you now look at the whole per
+            capita figure in terms of gross domestic product, the rich countries are in a good position again. Our
+            conclusion from this project is that data can always be chosen in a way that serves the purpose or argument
+            that is needed.
         </p>
 
         <div class="mobiledisplay">
             <a href="#emissionType">
-                <div class="p-5 my-3" style="background: #2D4352;"> 
+                <div class="p-5 my-3" style="background: #2D4352;">
                     <div class="pb-2  text-center">
-                            <img src="/assets/typeWhite.png" height="60px" width="50px">    
-                        </div>
-                    <h4 style="color: white;"> Explore Greenhouse Gas Emissions by Type</h4>  
+                        <img src="/assets/typeWhite.png" height="60px" width="50px">
+                    </div>
+                    <h4 style="color: white;"> Explore Greenhouse Gas Emissions by Type</h4>
                 </div>
             </a>
             <a href="#emissionCountry">
                 <div class="p-5 my-3" style="background: #2D4352;">
                     <div class="pb-2 text-center">
-                            <img src="/assets/countryWhite.png" height="60px" width="50px">    
-                        </div>
+                        <img src="/assets/countryWhite.png" height="60px" width="50px">
+                    </div>
                     <h4 style="color: white;">Explore Greenhouse Gas Emission by Country</h4>
                 </div>
             </a>
-            
-            
-        
-        
+
+
+
+
         </div>
-        
-        
+
+
         <div class="row pt-5 m-auto hexagondisplay">
             <div class="exploreBox col pb-5">
                 <div class="hexagon p-5 mx-auto">
                     <span class="p-5">
                         <div class="pb-2  text-center">
-                            <img src="/assets/typeWhite.png" height="60px" width="50px">    
+                            <img src="/assets/typeWhite.png" height="60px" width="50px">
                         </div>
-                    <h4>Greenhouse Gas Emissions by Type</h4>
-                        
-                    <p>
-                        Click here to explore an interactive dynamic world map which shows differenet categories of greenhouse gas emissions.
-                    </p>
+                        <h4>Greenhouse Gas Emissions by Type</h4>
+
+                        <p>
+                            Click here to explore an interactive dynamic world map which shows differenet categories of
+                            greenhouse gas emissions.
+                        </p>
                         <div class="text-center">
-                            <button class="btn btn-secondary" type="button"><a href="#emissionType" style="color:white;">Explore</a></button></div>
+                            <button class="btn btn-secondary" type="button"><a href="#emissionType"
+                                    style="color:white;">Explore</a></button></div>
                     </span>
                 </div>
             </div>
@@ -84,15 +97,19 @@
                 <div class="hexagon p-5 mx-auto">
                     <span class="py-2 px-5">
                         <div class="pb-2 text-center">
-                            <img src="/assets/countryWhite.png" height="60px" width="50px">    
+                            <img src="/assets/countryWhite.png" height="60px" width="50px">
                         </div>
-                    <h4>Greenhouse Gas Emission by Country</h4>
-                        
-                    <p>
-                        Click here to explore an interactive dynamic world map which shows you how well a specific country performs. You can analze their best and worst greenhouse gas emission category. In addition to that you can distort the visualization to represent the country at its absolute worst or best.
-                    </p>
+                        <h4>Greenhouse Gas Emission by Country</h4>
+
+                        <p>
+                            Click here to explore an interactive dynamic world map which shows you how well a specific
+                            country performs. You can analze their best and worst greenhouse gas emission category. In
+                            addition to that you can distort the visualization to represent the country at its absolute
+                            worst or best.
+                        </p>
                         <div class="text-center">
-                            <button class="btn btn-secondary" type="button"><a href="#emissionCountry" style="color:white;">Explore</a></button></div>
+                            <button class="btn btn-secondary" type="button"><a href="#emissionCountry"
+                                    style="color:white;">Explore</a></button></div>
                     </span>
                 </div>
             </div>
@@ -100,36 +117,39 @@
 
         <div class="p-4 mt-5 card databox" id="emissionType">
             <div class="m-auto row py-3 align-items-center">
-                    <img src="/assets/typeColor.png" height="60px" width="50px">
-                    <h2>&nbsp &nbsp CO2-Emission by Type</h2>
+                <img src="/assets/typeColor.png" height="60px" width="50px">
+                <h2>&nbsp &nbsp CO2-Emission by Type</h2>
             </div>
             <p>
-                This interactive visualization serves to understand that different countries score very differently compared to each other when considering different forms and perspectives of greenhouse gas emissions
+                This interactive visualization serves to understand that different countries score very differently
+                compared to each other when considering different forms and perspectives of greenhouse gas emissions
             </p>
 
             <div class="text-center dropdown py-5">
                 <h6> Please choose an Emission Type</h6>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown button
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="datasetDropdownMapOne"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select Dataset
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                <div id="dropdown-menuOne" class="dropdown-menu" aria-labelledby="datasetDropdownMapOne">
+                    <a class="dropdown-item" href="#">No</a>
+                    <a class="dropdown-item" href="#">Data</a>
+                    <a class="dropdown-item" href="#">Loaded yet</a>
                 </div>
             </div>
 
             <div class="card">
 
-                <svg></svg>
-                <button class="btn btn-secondary" type="button" id="updateData">Neu generieren</button>
+                <div class="worldformat" id="worldOne"></div>
             </div>
+            <div class="px-5" id="year-slider-one"></div>
         </div>
 
         <div id="data" class="infobox p-4 my-3 card">
             <h5>Information about data</h5>
-            <p> We got our data from the world famous portal for data, Gapminder.com This platform is from bestselling author Hans Rosling.
-                
+            <p> We got our data from the world famous portal for data, Gapminder.com This platform is from bestselling
+                author Hans Rosling.
+
                 <a href="https://www.gapminder.org/data/">Link to the data</a>
             </p>
         </div>
@@ -138,44 +158,49 @@
             <div class="m-auto row py-3 align-items-center">
                 <img src="/assets/countryColor.png" height="60px" width="50px">
                 <h2>&nbsp &nbsp CO2-Emission by Country</h2>
-                    
-                    
-                    
+
+
+
             </div>
             <p>
-                With this visualization we want to draw attention to the manipulability of data. To look good, you just have to take the right data and display it correctly (or incorrectly). Or as Ronald Coase put it more appropriately: <br> 
+                With this visualization we want to draw attention to the manipulability of data. To look good, you just
+                have to take the right data and display it correctly (or incorrectly). Or as Ronald Coase put it more
+                appropriately: <br>
             </p>
             <span class="quote">
                 <b>“If you torture the data long enough, it will confess to anything."</b>
             </span>
             <p>
                 With this tool we strongly recommend the well-known statement of Winston S. Churchill:
-            </p>  
+            </p>
             <span class="quote">
-                <b>“I only believe in statistics that I doctored myself”.</b> 
+                <b>“I only believe in statistics that I doctored myself”.</b>
             </span>
             <p>
-                Please choose any country and you will see the difference it can make when picking certain data and displaying it in a certain way. Adjust the slider below and see what happens.
+                Please choose any country and you will see the difference it can make when picking certain data and
+                displaying it in a certain way. Adjust the slider below and see what happens.
             </p>
-            
-        
+
+
             <div class="text-center dropdown my-5">
                 <h6>Please choose a Country</h6>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="datasetDropdownMapTwo"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span id="dropdown-text">Select Dataset</span>
                 </button>
-                <div id="dropdown-menu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">No</a>
-                  <a class="dropdown-item" href="#">Data</a>
-                  <a class="dropdown-item" href="#">Loaded yet</a>
+                <div id="dropdown-menuTwo" class="dropdown-menu" aria-labelledby="datasetDropdownMapTwo">
+                    <a class="dropdown-item" href="#">No</a>
+                    <a class="dropdown-item" href="#">Data</a>
+                    <a class="dropdown-item" href="#">Loaded yet</a>
                 </div>
             </div>
-            
-           
-            
+
+
+
             <h6 class="text-center">Please select a Stage</h6>
 
-            <a data-toggle="modal" data-target="#exampleModalCenter"><img src="/assets/information.png" height="40px" width="40px"></a>
+            <a data-toggle="modal" data-target="#exampleModalCenter"><img src="/assets/information.png" height="40px"
+                    width="40px"></a>
 
             <input type="range" class="px-5 custom-range" min="0" max="4" id="sliderRange">
 
@@ -200,73 +225,82 @@
 
             <div class="card py-5">
                 <h3>Country Name</h3>
-        
-                <div class="worldformat" id="world"></div>
 
-              </div>
-                <!--<button onclick="play()"><img src="/assets/play.png" height="40px" width="30px"></button>
-                <button onclick="stop()"><img src="/assets/pause.png" height="40px" width="30px"></button>-->
-                <div class="px-5" id="year-slider">
+                <div class="worldformat" id="worldTwo"></div>
+
             </div>
-            
+            <div class="px-5" id="year-slider-two">
+            </div>
+
             <h3 class="mt-5">Here are four stories that represent each of the above categories.</h3>
             <div class="row mt-2">
-                
+
                 <div class="redGradient card storyBox col p-4 m-2">
                     <div class="text-center">
                         <img src="/assets/trump.png" height="60px" width="50px">
                     </div>
                     <h5>Immigration</h5>
-                    
+
                     <p>
-                        <b><br>"3,775 known or suspected terrorists [were] prevented from traveling or entering the U.S. by DHS</b>
-                        This statement is an overestimation in general. Furthermore, they combined known and suspect terrorists which does not answer the question who qualifies for a suspected terrorists. The large numer does suggest that they included ethnicities as suspected terrorists.
+                        <b><br>"3,775 known or suspected terrorists [were] prevented from traveling or entering the U.S.
+                            by DHS</b>
+                        This statement is an overestimation in general. Furthermore, they combined known and suspect
+                        terrorists which does not answer the question who qualifies for a suspected terrorists. The
+                        large numer does suggest that they included ethnicities as suspected terrorists.
                     </p>
 
                 </div>
 
                 <div class="w-100 d-block d-sm-block d-md-none"></div>
-                
-                <div  class="orangeGradient card storyBox col p-4 m-2">
+
+                <div class="orangeGradient card storyBox col p-4 m-2">
                     <div class="text-center">
                         <img src="/assets/trump.png" height="60px" width="50px">
                     </div>
                     <h5>MISSING</h5>
-                    
+
                     <p>
-                        <b><br>dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</b>
+                        <b><br>dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                            labore et dolore magna aliquyam erat, sed diam voluptua.</b>
                     </p>
 
                 </div>
-                
-                
+
+
                 <div class="w-100 d-block d-sm-block d-md-none"></div>
                 <div class="w-100 d-none d-md-block d-lg-none"></div>
-                
-                
-                
-                <div  class="greenGradient card storyBox col p-4 m-2">
+
+
+
+                <div class="greenGradient card storyBox col p-4 m-2">
                     <div class="text-center">
                         <img src="/assets/trump.png" height="60px" width="50px">
                     </div>
                     <h5>Corona Virus</h5>
-                    
+
                     <p>
-                        <b><br>"Just reported that the United States has done far more “testing” than any other nation, by far! In fact, over an eight day span, the United States now does more testing than what South Korea (which has been a very successful tester) does over an eight week span. Great job!"</b>
-                        Donald Trump mentioned the absolute number and not the number per capita, which makes the six times more populous USA much better off than it actually is. 
+                        <b><br>"Just reported that the United States has done far more “testing” than any other nation,
+                            by far! In fact, over an eight day span, the United States now does more testing than what
+                            South Korea (which has been a very successful tester) does over an eight week span. Great
+                            job!"</b>
+                        Donald Trump mentioned the absolute number and not the number per capita, which makes the six
+                        times more populous USA much better off than it actually is.
                     </p>
 
                 </div>
                 <div class="w-100 d-block d-sm-block d-md-none"></div>
-                <div  class="purpleGradient card storyBox col p-4 m-2">
+                <div class="purpleGradient card storyBox col p-4 m-2">
                     <div class="text-center">
                         <img src="/assets/trump.png" height="60px" width="50px">
                     </div>
                     <h5>Inauguration</h5>
-                   
+
                     <p>
-                        <b><br>"We had a massive field of people," Trump said. "You saw that — packed. I get up this morning, I turn on one of the networks and they show an empty field. I said wait a minute, I made a speech. I looked out the field was, it looked like a million, a million and a half people, they showed a field where there was practically nobody standing there."</b>
-                        
+                        <b><br>"We had a massive field of people," Trump said. "You saw that — packed. I get up this
+                            morning, I turn on one of the networks and they show an empty field. I said wait a minute, I
+                            made a speech. I looked out the field was, it looked like a million, a million and a half
+                            people, they showed a field where there was practically nobody standing there."</b>
+
                     </p>
 
                 </div>
@@ -277,16 +311,21 @@
 
         <div class="infobox p-4 my-3 card">
             <h5>Information about data</h5>
-            <p> We got our data from the world famous portal for data, Gapminder.com This platform is from bestselling author Hans Rosling.
+            <p> We got our data from the world famous portal for data, Gapminder.com This platform is from bestselling
+                author Hans Rosling.
                 <a href="https://www.gapminder.org/data/">Link to the data</a>
             </p>
         </div>
-                
-        <p><b>Creators:</b> Adrian Joerg (<a style="color: black;" href="mailto:adrian.joerg@students.unibe.ch">adrian.joerg@students.unibe.ch</a>), Olivier Staehli (<a style="color: black;" href="mailto:adrian.joerg@students.unibe.ch">olivier.staehli@students.unibe.ch</a>)</p>
+
+        <p><b>Creators:</b> Adrian Joerg (<a style="color: black;"
+                href="mailto:adrian.joerg@students.unibe.ch">adrian.joerg@students.unibe.ch</a>), Olivier Staehli (<a
+                style="color: black;"
+                href="mailto:adrian.joerg@students.unibe.ch">olivier.staehli@students.unibe.ch</a>)</p>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -296,11 +335,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p><b>Devil:</b> We took the data from the category 'bad' and manipulated it with statistical tricks (e.g. exchanged scale from linear to logarithmic) to make it look worse.</p>
+                    <p><b>Devil:</b> We took the data from the category 'bad' and manipulated it with statistical tricks
+                        (e.g. exchanged scale from linear to logarithmic) to make it look worse.</p>
                     <p><b>Dislike:</b> This shows the category where the selected country is performing the worst.</p>
-                    <p><b>Neutral:</b> This shows the greenhose-gas emissions as ethically correct as we were able to present it, according to our understanding.</p>
+                    <p><b>Neutral:</b> This shows the greenhose-gas emissions as ethically correct as we were able to
+                        present it, according to our understanding.</p>
                     <p><b>Like:</b> This shows the category where the selected country is performing the best.</p>
-                    <p><b>Unicorn:</b> We took the data from the category 'good' and manipulated it with statistical tricks (e.g. exchanged scale from linear to logarithmic) to make it look better.</p>
+                    <p><b>Unicorn:</b> We took the data from the category 'good' and manipulated it with statistical
+                        tricks (e.g. exchanged scale from linear to logarithmic) to make it look better.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -309,7 +351,6 @@
         </div>
     </div>
     <script src="js/map.js" type="module"></script>
-    <script src="app.js"></script>
 </body>
 
 </html>
