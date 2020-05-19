@@ -155,3 +155,13 @@ background: linear-gradient(0deg, rgba(9,9,121,1) 0%, rgba(142,36,170,1) 42%);
   border-color: transparent transparent transparent #404040;
 }
 
+
+::placeholder, ::-webkit-input-placeholder, :-ms-input-placeholder {
+  color: white;
+  opacity: 1;
+}
+
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+} 

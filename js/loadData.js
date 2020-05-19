@@ -1,8 +1,23 @@
-import { StateHandler } from "./StateHandler.js";
+import {
+    StateHandler
+} from "./StateHandler.js";
+import {
+    calculateRanking
+} from "./Ranking.js";
 
-let datasetsInformation = [
-    {"src":"../data/co2_emissions_tonnes_per_person.csv", "title":"CO2 Emissions in tonnes per person", "units":" tonnes per capita", "id": "co2-t-per-capita"},
-    {"src":"../data/co2_emissionsInKt.csv", "title":"CO2 Emissions in Kilotonnes", "units" : " Kilotonnes", "id": "co2-kt"}
+
+let datasetsInformation = [{
+        "src": "../data/co2_emissions_tonnes_per_person.csv",
+        "title": "CO2 Emissions in tonnes per person",
+        "units": " tonnes per capita",
+        "id": "co2-t-per-capita"
+    },
+    {
+        "src": "../data/co2_emissionsInKt.csv",
+        "title": "CO2 Emissions in Kilotonnes",
+        "units": " Kilotonnes",
+        "id": "co2-kt"
+    }
 ]
 
 let idToDataPoints = new Map();
@@ -26,7 +41,9 @@ function createQueue(nextCallback) {
     datasetsInformation.forEach((dataset) => {
         queue.defer(d3.csv, dataset.src)
     });
-    queue.await((error, ...data) => {prepareData(nextCallback, error, world, ...data);});
+    queue.await((error, ...data) => {
+        prepareData(nextCallback, error, world, ...data);
+    });
 }
 
 function getDataById(id) {
@@ -58,7 +75,11 @@ function calculateMinMaxMean(dataPoint, data) {
 
     let mean = total / numberOfElementsWithData;
 
-    return {min, max, mean}
+    return {
+        min,
+        max,
+        mean
+    }
 }
 
 function matchCountry(country, data, dataPoint) {
@@ -68,12 +89,18 @@ function matchCountry(country, data, dataPoint) {
         if (country.properties[datasetId] === undefined) country.properties[datasetId] = {};
         if (isTheSameCountry(data["country"], country.properties.NAME)) {
             if (data[dataPoint] != "") {
-                country.properties[datasetId][dataPoint] = {data: data[dataPoint], isFillValue: false};
+                country.properties[datasetId][dataPoint] = {
+                    data: data[dataPoint],
+                    isFillValue: false
+                };
             }
         }
     });
     if (country.properties[datasetId][dataPoint] === undefined) {
-        country.properties[datasetId][dataPoint] = {data: mean, isFillValue: true};
+        country.properties[datasetId][dataPoint] = {
+            data: mean,
+            isFillValue: true
+        };
     }
 }
 
@@ -110,13 +137,12 @@ async function prepareData(nextCallback, error, world, ...readData) {
         throw error;
     };
 
-    
+
     let countries = world.objects.countries;
     // For each read file
     for (let i = 0; i < readData.length; i++) {
         //Current file
         let data = readData[i];
-        console.log(data);
 
         //Current dataset information
         let dataset = datasetsInformation[i];
@@ -126,11 +152,18 @@ async function prepareData(nextCallback, error, world, ...readData) {
 
         //Get each year there is data for
         let dataPoints = getDataPoints(data);
-        console.log(dataPoints);
-       
+
         dataPoints.forEach(dataPoint => {
-            let {min, max, mean} = calculateMinMaxMean(dataPoint, data);
-            data.information[dataPoint] = new Map([["min", min], ["max", max], ["mean", mean]]);
+            let {
+                min,
+                max,
+                mean
+            } = calculateMinMaxMean(dataPoint, data);
+            data.information[dataPoint] = new Map([
+                ["min", min],
+                ["max", max],
+                ["mean", mean]
+            ]);
             countries.geometries.forEach((element) => {
                 matchCountry(element, data, dataPoint);
             });
@@ -144,8 +177,14 @@ async function prepareData(nextCallback, error, world, ...readData) {
         world.objects.countries.geometries.findIndex(d => d.properties.ISO_A2 === 'AQ'),
         1
     );
+   let identifier = readData.map(e => e.information.id);
+    calculateRanking(world, ...identifier);
     nextCallback(error, world, ...readData);
 }
 
-export {createQueue, loadEmptyMap, getDataById, getDataPoints}
-
+export {
+    createQueue,
+    loadEmptyMap,
+    getDataById,
+    getDataPoints
+}

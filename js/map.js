@@ -20,9 +20,7 @@ let height = d3.select("#worldTwo").node().getBoundingClientRect().height;
 let StateHandler1 = StateHandler.getNewStateHandler("map1");
 let StateHandler2 = StateHandler.getNewStateHandler("map2");
 
-
-let MapControlOne = new MapControls('#year-slider-one', "map1");
-let MapControlTwo = new MapControls('#year-slider-two', "map2");
+let MapControl = new MapControls('#year-slider-one', "map1");
 
 
 //Initialize Logger
@@ -43,6 +41,25 @@ StateHandler2.addDisplayInformationCallback(() => {
  * Load the map and all data files
  */
 loadEmptyMap(showMap);
+
+$('#datasetDropdownMapTwo').on('input', function() {
+    let allSelections = $('#dropdown-menuTwo')[0].childNodes;
+    let text = this.value.toLowerCase();
+    allSelections.forEach((selection)=> {
+        if (!(selection.innerText.toLowerCase().includes(text))) {
+            selection.classList.add('d-none');
+        } else {
+            selection.classList.remove('d-none');
+        }
+    });
+});
+$('#dropdownTwoParent').on('hidden.bs.dropdown', function () {
+    let allSelections = $('#dropdown-menuTwo')[0].childNodes;
+    allSelections.forEach((selection) => {
+        selection.classList.remove('d-none');
+    });
+    $('#datasetDropdownMapTwo')[0].value = "";
+  })
 
 function showMap(error, worldTopo, ...data) {
     StateHandler.setState('Displaying the map', 'Displaing a map without any data');
@@ -81,25 +98,44 @@ function createEmptyMapOn(htmlId) {
 }
 
 function initializeDropDown(map, data) {
-    let dropdownIdentifier = map == "worldOne" ? "dropdown-menuOne" : "dropdown-menuTwo";
-    let datasets = data.map((data)=> {return data.information});
-    let dropdownMenu = document.getElementById(dropdownIdentifier);
-    dropdownMenu.innerHTML = '';
-    datasets.forEach((dataset) => {
-        let element = document.createElement('button');
-        element.innerText = dataset.title;
-        element.type = 'button';
-        element.classList.add('dropdown-item');
-        element.onclick = () => {
-            changeDataSetTo(dataset.id, map);
-        };
+    if (map == "worldOne") {
+        let datasets = data.map((data)=> {return data.information});
+        let dropdownMenu = document.getElementById("dropdown-menuOne");
+        dropdownMenu.innerHTML = '';
+        datasets.forEach((dataset) => {
+            let element = document.createElement('button');
+            element.innerText = dataset.title;
+            element.type = 'button';
+            element.classList.add('dropdown-item');
+            element.onclick = () => {
+                changeDataSetTo(dataset.id, map);
+            };
         dropdownMenu.appendChild(element);
-    })
+        });
+    } else {
+        let countries = world.objects.countries.geometries.map(data => data.properties.NAME);
+        let dropdownMenu = document.getElementById("dropdown-menuTwo");
+        dropdownMenu.innerHTML = '';
+        countries.forEach((country) => {
+            let element = document.createElement('button');
+            element.innerText = country;
+            element.type = 'button';
+            element.classList.add('dropdown-item');
+            element.onclick = () => {
+                console.log(country)
+                //changeDataSetTo(dataset.id, map);
+            };
+        dropdownMenu.appendChild(element);   
+        });
+    } 
 }
 
+
+
+
 function updateYearPicker(stateHandler) {
+    if (stateHandler !== StateHandler1) return
     let columns = getDataById(stateHandler.getCurrentDisplayedDataset()).columns;
-    let MapControl = stateHandler === StateHandler1 ? MapControlOne : MapControlTwo;
     let cartogram = cartograms[stateHandler === StateHandler1 ? "worldOne" : "worldTwo"];
     MapControl.newSlider(columns,(col) =>  changeDatapointTo(col, stateHandler));
     MapControl.newAnimationControlButtons({step: () => {
@@ -134,7 +170,9 @@ function changeDataSetTo(id, map) {
     .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
     cartograms[map]
         .value((feature) => getDataOfCountry(feature, stateHandler))
-        .color((f) => colorScale(getDataOfCountry(f, stateHandler)))
+        .color((f) => {
+        if (f.properties[stateHandler.getCurrentDisplayedDataset()][stateHandler.getCurrentDisplayedDatapoint()].isFillValue) {return "lightgrey"}
+        return colorScale(getDataOfCountry(f, stateHandler))})
         .units(selectedDatapointInformation.units)
         .label(({properties: p}) => `${p.NAME}`)
         .valFormatter(n => n)
