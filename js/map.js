@@ -1,7 +1,6 @@
 import {
     createQueue,
     getDataById,
-    getDataPoints,
     loadEmptyMap
 } from './loadData.js'; 
 import {

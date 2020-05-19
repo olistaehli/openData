@@ -264,12 +264,15 @@ function getDataById(id) {
 }
 
 function getDataPoints(readData) {
-    let id = readData.id;
+    let id = readData.information.id;
     if (idToDataPoints[id]) return idToDataPoints[id];
     let dataPoints = readData['columns'];
     let index = dataPoints.indexOf('country');
-    dataPoints.splice(index, 1);
-    idToDataPoints.set(id, dataPoints);
+    if (index !== -1) {
+        dataPoints.splice(index, 1);
+        idToDataPoints.set(id, dataPoints);
+    }
+    
     return dataPoints;
 }
 
@@ -344,8 +347,7 @@ function addDataInformationToDataset(data, i) {
     idToData.set(data.information.id, data);
 
     //Get each year there is data for
-    let dataPoints = getDataPoints(data);
-
+    let dataPoints = getDataPoints(data);  
     dataPoints.forEach((dataPoint) => {
         let {
             min,
@@ -388,6 +390,7 @@ async function prepareData(nextCallback, error, world, ...readData) {
             1
         );
         let identifier = readData.map(e => e.information.id);
+        StateHandler.getStateHandler("map2").setState("Start calculating", "Started calculating the best and worst part of each country");
         calculateRanking(world, ...identifier);
         nextCallback(error, world, ...readData);
     });
