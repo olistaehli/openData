@@ -8,7 +8,6 @@ let allRankingTables = [];
 
 async function calculateRanking(world, ...dataIds) {
     if (dataIds === undefined || dataIds.length < 0) { return }
-    console.log(dataIds);
     calculateRankingOverDataset(world, dataIds[0]);
 }
 
