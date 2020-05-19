@@ -194,7 +194,9 @@ function changeDatapointTo(col, stateHandler) {
     let cartogram = cartograms[stateHandler === StateHandler1 ? "worldOne" : "worldTwo"];
     cartogram
         .value((feature) => getDataOfCountry(feature, stateHandler))
-        .color((f) => colorScale(getDataOfCountry(f, stateHandler)))
+        .color((f) => {
+        if (f.properties[stateHandler.getCurrentDisplayedDataset()][stateHandler.getCurrentDisplayedDatapoint()].isFillValue) {return "lightgrey"}
+        return colorScale(getDataOfCountry(f, stateHandler))})
         .units(selectedDatapointInformation.units)
         .label(({properties: p}) => `${p.NAME}`)
         .valFormatter(n => n)

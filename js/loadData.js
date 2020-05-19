@@ -1,23 +1,66 @@
-import {
-    StateHandler
-} from "./StateHandler.js";
-import {
-    calculateRanking
-} from "./Ranking.js";
+import { StateHandler } from "./StateHandler.js";
 
-
-let datasetsInformation = [{
-        "src": "../data/co2_emissions_tonnes_per_person.csv",
-        "title": "CO2 Emissions in tonnes per person",
-        "units": " tonnes per capita",
-        "id": "co2-t-per-capita"
-    },
-    {
-        "src": "../data/co2_emissionsInKt.csv",
-        "title": "CO2 Emissions in Kilotonnes",
-        "units": " Kilotonnes",
-        "id": "co2-kt"
-    }
+let datasetsInformation = [
+    {"src":"../data/co2_emissions_tonnes_per_person.csv", "title":"CO2 Emissions in tonnes per person", "units":" tonnes per capita", "id": "co2-t-per-capita"},
+    {"src":"../data/co2_emissionsInKt.csv", "title":"CO2 Emissions in Kilotonnes", "units" : " Kilotonnes", "id": "co2-kt"},
+    {"src":"../data/methaneemissions_ktOfCO2equivalent.csv", "title":"Methane Emissions in tonnes", "units":" Kilotonnes", "id": "methane-kt"},
+    {"src":"../data/cumulative_co2_emissions_tonnes.csv", "title":"Cumulative CO2 emissions (from fossil fuel) in tonnes", "units":" Kilotonnes", "id": "cum-co2-kt"},
+    {"src":"../data/en_atm_co2e_pp_gd.csv", "title":"CO2 emissions in comparison to the GDP", "units":" kg per PPP $ of GDP", "id": "gdp"},
+    
+    //worldmap is not displayed
+    {"src":"../data/en_atm_ghgo_kt_ce.csv", "title":"Other geenhouse gas emissions, HFC, PFC and SF6", "units":" Kilotonnes", "id": "ghgo_kt_ce"},
+    {"src":"../data/en_atm_greenhhousegt_kt_ce.csv", "title":"Total greenhouse gas emissions", "units":" Kilotonnes", "id": "greenhhousegt_kt_ce"},
+    
+    //does not scale - worldmap disappears
+    {"src":"../data/en_atm_hfcg_kt_ce.csv", "title":"HFC gas emissions", "units":" Kilotonnes", "id": "hfcg-kt-ce"},
+    {"src":"../data/en_atm_noxe_kt_ce.csv", "title":"Nitrous oxide emissions", "units":" Kilotonnes", "id": "noxe_kt_ce"},
+    
+    //does not skale - worldmap disappears
+    {"src":"../data/en_atm_pfcg_kt_ce.csv", "title":"PFC gas emissions", "units":" Kilotonnes", "id": "pfcg_kt_ce"},
+    
+    //worldmap is not displayed
+    {"src":"../data/en_clc_ghgr_mt_ce.csv", "title":"GHG net emissions/ removals by LUCF", "units":" Megatonnes", "id": "ghgr_mt_ce"},
+    
+    //worldmap disappears
+    {"src":"../data/en_atm_co2e_gasf_kt.csv", "title":"CO2 emissions from gaseous fuel consumption", "units":" Kilotonnes", "id": "gasf_k"},
+    //does not scale - worldmap disappears
+    {"src":"../data/en_atm_co2e_liquidf_kt.csv", "title":"CO2 emissions from liquid fuel consumption", "units":" Kilotonnes", "id": "liquidf_kt"},
+    
+    //does not scale
+    {"src":"../data/en_atm_co2e_solidf_kt.csv", "title":"CO2 emissions from solid fuel consumption", "units":" Kilotonnes", "id": "solidf_kt"},
+    
+    {"src":"../data/residential_electricity_use_per_person.csv", "title":"Residential electricity consumption in kWh per person", "units" : " kWh", "id": "res-e-pp"},
+    {"src":"../data/residential_electricity_use_total.csv", "title":"Electricity consumption in kWh in total", "units" : " kWh", "id": "res-e-total"},
+    {"src":"../data/energy_use_per_person.csv", "title":"Energy consumption in kWh per person", "units" : " kWh", "id": "e-use-pp"},
+    
+    {"src":"../data/energy_production_per_person.csv", "title":"Energy production in tonnes oil equivalent per person", "units" : " tonnes oil equivalent", "id": "e-prod-pp"},
+    {"src":"../data/energy_production_total.csv", "title":"Energy production in tonnes oil equivalent in total", "units" : " tonnes oil equivalent", "id": "e-prod-total"},
+    
+    {"src":"../data/electricity_generation_per_person.csv", "title":"Electricity production in kWh per person", "units" : " kWh", "id": "elec-gen-pp"},
+    {"src":"../data/electricity_generation_total.csv", "title":"Electricity production in kWh in total", "units" : " kWh", "id": "elec-gen-total"},
+    
+    {"src":"../data/wood_removal_cubic_meters.csv", "title":"Wood removal in cubic meters", "units" : "Cubic meters", "id": "cubem"},
+    
+    {"src":"../data/oil_production_total.csv", "title":"Oil production in tonnes oil equivalent in total", "units" : "tonnes oil equivalent", "id": "oil-prod-total"},
+    {"src":"../data/oil_production_per_person.csv", "title":"Oil production in tonnes oil equivalent per person", "units" : "tonnes oil equivalent", "id": "oil-prod-pp"},
+    {"src":"../data/oil_consumption_total.csv", "title":"Oil consumption in tonnes oil equivalent in total", "units" : "tonnes oil equivalent", "id": "oil-cons-total"},
+    
+    //error
+    //{"src":"../data/oil_consumption_per_person.csv", "title":"Oil consumption in XYZ per person", "units" : "XYZ", "id": "oil-cons-pp"},
+    
+    //error
+    //{"src":"../data/coal_consumption_per_person.csv", "title":"Coal consumption in tonnes oil equivalent per person", "units" : " tonnes oil equivalent", "id": "coal-cons-pp"},
+    
+    //does not scale
+    {"src":"../data/coal_consumption_total.csv", "title":"Coal consumption in tonnes oil equivalent in total", "units" : " tonnes oil equivalent", "id": "coal-cons-total"},
+    
+    {"src":"../data/hydro_power_generation_per_person.csv", "title":"Hydro power generation per person", "units":" tonnes oil equivalent", "id": "hydro-pp"},
+    {"src":"../data/hydro_power_generation_total.csv", "title":"Hydro power generation in total", "units":" tonnes oil equivalent", "id": "hydro-total"},
+    {"src":"../data/nuclear_power_generation_per_person.csv", "title":"Nuclear power generation per person", "units":" tonnes oil equivalent", "id": "nuc-pp"},
+    
+    //does not scale
+    {"src":"../data/nuclear_power_generation_total.csv", "title":"Nuclear power generation in total", "units":" tonnes oil equivalent", "id": "nuc-total"},
+    
 ]
 
 let idToDataPoints = new Map();
