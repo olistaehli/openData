@@ -4,6 +4,9 @@ import {
 import {
     calculateRanking
 } from "./Ranking.js";
+import {
+    Logger
+} from "./Logger.js";
 
 let datasetsInformation = [{
         "src": "../data/co2_emissions_tonnes_per_person.csv",
@@ -244,18 +247,18 @@ function loadEmptyMap(nextCallback) {
     queue.defer(d3.json, "../map.json")
     queue.await((error, worldLoaded) => {
         world = worldLoaded
-        prepareData(nextCallback, error, world);
+        prepareData(nextCallback, undefined, error, world);
     });
 }
 
-function createQueue(nextCallback) {
+function createQueue(nextCallback, calculatedRankingCallback) {
     StateHandler.setState('Loading Data', `Loading ${datasetsInformation.length} Datasets`);
     let queue = d3.queue();
     datasetsInformation.forEach((dataset) => {
         queue.defer(d3.csv, dataset.src)
     });
     queue.await((error, ...data) => {
-        prepareData(nextCallback, error, world, ...data);
+        prepareData(nextCallback, calculatedRankingCallback, error, world, ...data);
     });
 }
 
@@ -265,15 +268,19 @@ function getDataById(id) {
 
 function getDataPoints(readData) {
     let id = readData.information.id;
-    if (idToDataPoints[id]) return idToDataPoints[id];
+    if (idToDataPoints.get(id)) return idToDataPoints.get(id);
     let dataPoints = readData['columns'];
     let index = dataPoints.indexOf('country');
     if (index !== -1) {
         dataPoints.splice(index, 1);
         idToDataPoints.set(id, dataPoints);
     }
-    
     return dataPoints;
+}
+
+function updateDataPoints(id, dataPoints) {
+    idToDataPoints.delete(id);
+    idToDataPoints.set(id, dataPoints);
 }
 
 function calculateMinMaxMean(dataPoint, data) {
@@ -290,7 +297,15 @@ function calculateMinMaxMean(dataPoint, data) {
     });
 
     let mean = total / numberOfElementsWithData;
-
+    if (numberOfElementsWithData == 0) {
+        throw {
+            name: "NoDataForAnyOfTheCountries",
+            message: `There was no data for ${dataPoint} in ${data.information.title} (${data.information.id})`,
+            toString: function () {
+                return this.name + ": " + this.message;
+            }
+        };
+    }
     return {
         min,
         max,
@@ -301,7 +316,6 @@ function calculateMinMaxMean(dataPoint, data) {
 async function matchCountry(country, data) {
     let datasetId = data.information.id;
     let dataPoints = getDataPoints(data);
-
     data.forEach(dataOfACountry => {
         if (country.properties[datasetId] === undefined) country.properties[datasetId] = {};
         if (isTheSameCountry(dataOfACountry["country"], country.properties.NAME)) {
@@ -316,7 +330,7 @@ async function matchCountry(country, data) {
         }
     });
     fillEmptyValues(data);
-    dataPoints.forEach((dataPoint)=> {
+    dataPoints.forEach((dataPoint) => {
         let mean = data.information[dataPoint].get('mean');
         if (country.properties[datasetId][dataPoint] === undefined) {
             country.properties[datasetId][dataPoint] = {
@@ -347,23 +361,30 @@ function addDataInformationToDataset(data, i) {
     idToData.set(data.information.id, data);
 
     //Get each year there is data for
-    let dataPoints = getDataPoints(data);  
-    dataPoints.forEach((dataPoint) => {
-        let {
-            min,
-            max,
-            mean
-        } = calculateMinMaxMean(dataPoint, data);
-        data.information[dataPoint] = new Map([
-            ["min", min],
-            ["max", max],
-            ["mean", mean]
-        ]);
-
+    let dataPoints = getDataPoints(data);
+    let newDataPoints = [];
+    dataPoints.forEach((dataPoint, index) => {
+        try {
+            let {
+                min,
+                max,
+                mean
+            } = calculateMinMaxMean(dataPoint, data);
+            data.information[dataPoint] = new Map([
+                ["min", min],
+                ["max", max],
+                ["mean", mean]
+            ]);
+            newDataPoints.push(dataPoint);
+        } catch (e) {
+            Logger.logError(e);
+            dataPoints.splice(index, 1);
+        }
     });
+    updateDataPoints(data.information.id, newDataPoints);
 }
 
-async function prepareData(nextCallback, error, world, ...readData) {
+async function prepareData(nextCallback, calculatedRankingCallback, error, world, ...readData) {
     StateHandler.setState('Preparing Data', 'Preparing the data...');
 
     if (error) {
@@ -391,7 +412,7 @@ async function prepareData(nextCallback, error, world, ...readData) {
         );
         let identifier = readData.map(e => e.information.id);
         StateHandler.getStateHandler("map2").setState("Start calculating", "Started calculating the best and worst part of each country");
-        calculateRanking(world, ...identifier);
+        calculateRanking(world, calculatedRankingCallback, ...identifier);
         nextCallback(error, world, ...readData);
     });
 }
