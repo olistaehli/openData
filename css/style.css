@@ -170,3 +170,7 @@ background: linear-gradient(0deg, rgba(222,85,5,1) 0%, rgba(255,179,0,1) 100%);
   border-color: transparent transparent transparent #404040;
 }
 
+body {
+  font-family: Roboto, Helvetica, sans-serif;
+}
+
