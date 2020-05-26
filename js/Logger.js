@@ -10,8 +10,8 @@ class Logger {
         });
     }
 
-    static logError(exception) {
-        console.error(exception.toString());
+    static logWarning(exception) {
+        console.warn(exception.toString());
     }
 }
 

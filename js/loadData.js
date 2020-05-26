@@ -8,7 +8,12 @@ import {
     Logger
 } from "./Logger.js";
 
-let datasetsInformation = [{
+let datasetsInformation = [/*{
+    "src": "../data/testdata.csv",
+    "title": "Testdaten",
+    "units": " tonnes per capita",
+    "id": "testing"
+},*/{
         "src": "../data/co2_emissions_tonnes_per_person.csv",
         "title": "CO2 Emissions in tonnes per person",
         "units": " tonnes per capita",
@@ -266,6 +271,10 @@ function getDataById(id) {
     return idToData.get(id)
 }
 
+function getTitleById(id) {
+    return idToData.get(id).information.title;
+}
+
 function getDataPoints(readData) {
     let id = readData.information.id;
     if (idToDataPoints.get(id)) return idToDataPoints.get(id);
@@ -377,7 +386,7 @@ function addDataInformationToDataset(data, i) {
             ]);
             newDataPoints.push(dataPoint);
         } catch (e) {
-            Logger.logError(e);
+            Logger.logWarning(e);
             dataPoints.splice(index, 1);
         }
     });
@@ -421,5 +430,6 @@ export {
     createQueue,
     loadEmptyMap,
     getDataById,
+    getTitleById,
     getDataPoints
 }

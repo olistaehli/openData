@@ -1,6 +1,7 @@
 import {
     createQueue,
     getDataById,
+    getTitleById,
     loadEmptyMap
 } from './loadData.js'; 
 import {
@@ -105,13 +106,16 @@ function mapTwoValueChanged() {
     let selectedCountry = allCountries.find(e => {return e.properties.NAME.toLowerCase() == country});
     if (selectedCountry === undefined) { return }
     let iso_code = selectedCountry.properties.ADM0_A3;
+    let datasetTitle, dataPointTitle;
     switch (+$("#sliderRange").val()) {
         case 0:
         case 1:
             //{dataset: dataId, dataPoint, rankingScore: rankingScore}
             let worstCase = getWorstCaseOfCountry(iso_code);
             changeDataSetTo(worstCase.dataset, "worldTwo");
-            changeDatapointTo(worstCase.dataPoint, StateHandler2)
+            changeDatapointTo(worstCase.dataPoint, StateHandler2);
+            datasetTitle = getTitleById(worstCase.dataset);
+            dataPointTitle = worstCase.dataPoint;
             break;
         case 2:
         case 3:
@@ -119,10 +123,20 @@ function mapTwoValueChanged() {
             //{dataset: dataId, dataPoint, rankingScore: rankingScore}
             let bestCase = getBestCaseOfCountry(iso_code);
             changeDataSetTo(bestCase.dataset, "worldTwo");
-            changeDatapointTo(bestCase.dataPoint, StateHandler2)
+            changeDatapointTo(bestCase.dataPoint, StateHandler2);
+            datasetTitle = getTitleById(bestCase.dataset);
+            dataPointTitle = bestCase.dataPoint;
         default:
             break;
     }
+
+    let informationContainer = document.createElement('div');
+    let titleLabel = document.createElement('h3');
+    titleLabel.classList.add('text-center');
+    titleLabel.innerText = `Currently displaying: ${datasetTitle} in ${dataPointTitle}`;
+    informationContainer.appendChild(titleLabel);
+    $('#worldTwoStatus').empty();
+    $('#worldTwoStatus').append(informationContainer);
     //0 worst, 1 bad, 2 neutral, 3 good, 4 best
 }
 
@@ -218,11 +232,11 @@ function changeDataSetTo(id, map) {
 
     let currentDatapoint = stateHandler.getCurrentDisplayedDatapoint();
     let selectedDatapointInformation = dataInformation[currentDatapoint];
-    const colorScale = d3.scaleSequential(d3.interpolatePlasma)
-    .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
     var scale = d3.scaleLinear()
         .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')])
-        .range([0,  selectedDatapointInformation.get('max')]);
+        .range([1,  1000]);
+    const colorScale = d3.scaleSequential(d3.interpolatePlasma)
+    .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
     cartograms[map]
         .value((feature) => scale(getDataOfCountry(feature, stateHandler)))
         .color((f) => {
@@ -238,7 +252,7 @@ function changeDataSetTo(id, map) {
         })
         .iterations(60);
 
-    stateHandler.setState('Displaying the map', `Displaying the map for ${dataInformation.title} in the year ${currentDatapoint}`)
+    stateHandler.setState('Displaying the map', `Displaying the map for ${dataInformation.title} in the year ${currentDatapoint}`);
     
     updateYearPicker(stateHandler);
 }
@@ -249,11 +263,11 @@ function changeDatapointTo(col, stateHandler) {
     let dataInformation = currentData.information;
     let currentDatapoint = stateHandler.getCurrentDisplayedDatapoint();
     let selectedDatapointInformation = dataInformation[currentDatapoint];
-    const colorScale = d3.scaleSequential(d3.interpolatePlasma)
-        .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
     var scale = d3.scaleLinear()
         .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')])
-        .range([0,  selectedDatapointInformation.get('max')]);
+        .range([1,  1000]);
+    const colorScale = d3.scaleSequential(d3.interpolatePlasma)
+        .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
     let cartogram = cartograms[stateHandler === StateHandler1 ? "worldOne" : "worldTwo"];
     cartogram
         .value((feature) => scale(getDataOfCountry(feature, stateHandler)))
@@ -263,5 +277,6 @@ function changeDatapointTo(col, stateHandler) {
         .units(selectedDatapointInformation.units)
         .label(({properties: p}) => `${p.NAME}`)
         .valFormatter(n => n)
-        .iterations(40, 800);
+        .iterations(60);
+    stateHandler.setState('Displaying the map', `Displaying the map for ${dataInformation.title} in the year ${currentDatapoint}`)
 }
