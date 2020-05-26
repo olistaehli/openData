@@ -9,7 +9,7 @@ import {
 } from './MapControls.js';
 import { StateHandler } from './StateHandler.js';
 import { Logger } from './Logger.js';
-import { getBestCaseOfCountry, getWorstCaseOfCountry} from './Ranking.js';
+import { getBestCaseOfCountry, getWorstCaseOfCountry, getRankingTable} from './Ranking.js';
 
 
 let cartograms = {};
@@ -125,7 +125,7 @@ function mapTwoValueChanged() {
     let selectedCountry = allCountries.find(e => {return e.properties.NAME.toLowerCase() == country});
     if (selectedCountry === undefined) { return }
     let iso_code = selectedCountry.properties.ADM0_A3;
-    let datasetTitle, dataPointTitle;
+    let datasetId, dataPointTitle;
     switch (+$("#sliderRange").val()) {
         case 0:
         case 1:
@@ -133,7 +133,7 @@ function mapTwoValueChanged() {
             let worstCase = getWorstCaseOfCountry(iso_code);
             changeDataSetTo(worstCase.dataset, "worldTwo");
             changeDatapointTo(worstCase.dataPoint, StateHandler2);
-            datasetTitle = getTitleById(worstCase.dataset);
+            datasetId = worstCase.dataset;
             dataPointTitle = worstCase.dataPoint;
             break;
         case 2:
@@ -143,29 +143,58 @@ function mapTwoValueChanged() {
             let bestCase = getBestCaseOfCountry(iso_code);
             changeDataSetTo(bestCase.dataset, "worldTwo");
             changeDatapointTo(bestCase.dataPoint, StateHandler2);
-            datasetTitle = getTitleById(bestCase.dataset);
+            datasetId = bestCase.dataset;
             dataPointTitle = bestCase.dataPoint;
         default:
             break;
     }
 
-    let informationContainer = document.createElement('div');
-    let titleLabel = document.createElement('p');
-    titleLabel.classList.add('text-center');
-    titleLabel.innerText = `Currently displaying: ${datasetTitle} in ${dataPointTitle}`;
-    informationContainer.appendChild(titleLabel);
-    let table = document.createElement('table');
-    table.classList.add('table', 'table-hover');
-    table.createTHead();
-    let headerRow = table.insertRow(0);
-    headerRow.insertCell(0).innerText = 'Rank';
-    headerRow.insertCell(1).innerText = 'Country Name';
-    headerRow.insertCell(2).innerText = 'Raw Value';
-    
+    let informationContainer = createStatusTable(datasetId, dataPointTitle, selectedCountry);
 
     $('#worldTwoStatus').empty();
     $('#worldTwoStatus').append(informationContainer);
-    //0 worst, 1 bad, 2 neutral, 3 good, 4 best
+}
+
+function createStatusTable(datasetId, dataPointTitle, selectedCountry) {
+    let informationContainer = document.createElement('div');
+    let titleLabel = document.createElement('p');
+    titleLabel.classList.add('text-center');
+    titleLabel.innerText = `Currently displaying: ${getTitleById(datasetId)} in ${dataPointTitle}`;
+    let tableContainer = document.createElement('div');
+    tableContainer.style.maxHeight = "300px";
+    tableContainer.style.overflowY = "auto";
+    let table = document.createElement('table');
+    table.classList.add('table', 'table-hover');
+    let countries = getRankingTable(datasetId, dataPointTitle);
+    countries.forEach((country, key) => {
+        let countryObj = world.objects.countries.geometries.find((e)=> {return e.properties.ADM0_A3 == key})
+        let row = table.insertRow(-1);
+        row.insertCell(0).innerText = country.rank;
+        row.insertCell(1).innerText = countryObj.properties.NAME;
+        row.insertCell(2).innerText = getDataOfCountry(countryObj, StateHandler2);
+
+        if (selectedCountry.properties.ADM0_A3 == countryObj.properties.ADM0_A3) {
+            row.style.backgroundColor = getComputedStyle(document.documentElement)
+                .getPropertyValue('--darkbeige-color');
+        }
+    });
+    
+    let head = table.createTHead();
+    let headerRow = head.insertRow(0);
+    headerRow.insertCell(0).innerText = 'Rank';
+    headerRow.insertCell(1).innerText = 'Country Name';
+    headerRow.insertCell(2).innerText = 'Raw Value';
+    head.style.position = "sticky";
+    head.style.backgroundColor = "white";
+    head.style.top = 0;
+
+    tableContainer.appendChild(table);
+
+
+    informationContainer.appendChild(titleLabel);
+    informationContainer.appendChild(tableContainer);
+    return informationContainer;
+
 }
 
 function mapWithoutData() {
@@ -247,7 +276,7 @@ function updateYearPicker(stateHandler) {
 function getDataOfCountry({properties: p}, stateHandler) {
     let selectedID = stateHandler.getCurrentDisplayedDataset();
     let selectedDataPoint = stateHandler.getCurrentDisplayedDatapoint();
-    return (+p[selectedID][selectedDataPoint].data > 0) ? +p[selectedID][selectedDataPoint].data : 1;
+    return +p[selectedID][selectedDataPoint].data;
 }
 
 function changeDataSetTo(id, map) {

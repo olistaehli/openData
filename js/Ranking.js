@@ -45,6 +45,9 @@ async function calculateWorstAndBestRanks(calculatedRankingCallback){
     calculatedRankingCallback()
 }
 
+function getRankingTable(id, datapoint) {
+    return allRankingTables.get(id).get(datapoint);
+}
 
 async function calculateRankingOverDataset(world, datasetIdentifier) {
     let countries = world.objects.countries.geometries;
@@ -101,4 +104,4 @@ function getRankingScore(value, rank, mean, sortedTable, normalizedArray, arrayM
     return rankScore;
 }
 
-export {calculateRanking, getBestCaseOfCountry, getWorstCaseOfCountry}
+export {calculateRanking, getBestCaseOfCountry, getWorstCaseOfCountry, getRankingTable}
