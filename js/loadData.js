@@ -200,19 +200,22 @@ let datasetsInformation = [{
         "src": "../data/hydro_power_generation_per_person.csv",
         "title": "Hydro power generation per person",
         "units": " tonnes oil equivalent",
-        "id": "hydro-pp"
+        "id": "hydro-pp",
+        "moreIsBetter": true
     },
     {
         "src": "../data/hydro_power_generation_total.csv",
         "title": "Hydro power generation in total",
         "units": " tonnes oil equivalent",
-        "id": "hydro-total"
+        "id": "hydro-total",
+        "moreIsBetter": true
     },
     {
         "src": "../data/nuclear_power_generation_per_person.csv",
         "title": "Nuclear power generation per person",
         "units": " tonnes oil equivalent",
-        "id": "nuc-pp"
+        "id": "nuc-pp",
+        "moreIsBetter": true
     },
 
     //does not scale
@@ -220,7 +223,8 @@ let datasetsInformation = [{
         "src": "../data/nuclear_power_generation_total.csv",
         "title": "Nuclear power generation in total",
         "units": " tonnes oil equivalent",
-        "id": "nuc-total"
+        "id": "nuc-total",
+        "moreIsBetter": true
     },
 
 ]

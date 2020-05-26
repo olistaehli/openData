@@ -9,7 +9,7 @@ import {
 } from './MapControls.js';
 import { StateHandler } from './StateHandler.js';
 import { Logger } from './Logger.js';
-import { getBestCaseOfCountry, getWorstCaseOfCountry, getRankingTable} from './Ranking.js';
+import { getBestCaseOfCountry, getWorstCaseOfCountry, getMediumCaseOfCountry, getRankingTable} from './Ranking.js';
 
 
 let cartograms = {};
@@ -136,7 +136,6 @@ function mapTwoValueChanged() {
             datasetId = worstCase.dataset;
             dataPointTitle = worstCase.dataPoint;
             break;
-        case 2:
         case 3:
         case 4:
             //{dataset: dataId, dataPoint, rankingScore: rankingScore}
@@ -145,8 +144,14 @@ function mapTwoValueChanged() {
             changeDatapointTo(bestCase.dataPoint, StateHandler2);
             datasetId = bestCase.dataset;
             dataPointTitle = bestCase.dataPoint;
-        default:
             break;
+        case 2:
+        default:
+            let averageCase = getMediumCaseOfCountry(iso_code);
+            changeDataSetTo(averageCase.dataset, "worldTwo");
+            changeDatapointTo(averageCase.dataPoint, StateHandler2);
+            datasetId = averageCase.dataset;
+            dataPointTitle = averageCase.dataPoint;
     }
 
     let informationContainer = createStatusTable(datasetId, dataPointTitle, selectedCountry, StateHandler2);

@@ -1,17 +1,20 @@
 import { getDataPoints, getDataById } from "./loadData.js";
 
 let allRankingTables = new Map();
-let bestCaseRankingTable = new Map();
-let worstCaseRankingTable = new Map();
+let edgeCasesRankingTables = new Map();
 
 function getBestCaseOfCountry(iso_code) {
     // {dataset: dataId, dataPoint, rankingScore: rankingScore}
-    return bestCaseRankingTable.get(iso_code);
+    return edgeCasesRankingTables.get(iso_code).best;
 }
 
 function getWorstCaseOfCountry(iso_code) {
     // {dataset: dataId, dataPoint, rankingScore: rankingScore}
-    return worstCaseRankingTable.get(iso_code);
+    return edgeCasesRankingTables.get(iso_code).worst;
+}
+
+function getMediumCaseOfCountry(iso_code) {
+    return edgeCasesRankingTables.get(iso_code).average;
 }
 
 async function calculateRanking(world, calculatedRankingCallback, ...dataIds) {
@@ -28,20 +31,24 @@ async function calculateRanking(world, calculatedRankingCallback, ...dataIds) {
 }
 
 async function calculateWorstAndBestRanks(calculatedRankingCallback){
+    let iso_codeToRankingTable = new Map();
     allRankingTables.forEach((dataPointToRankingTable, dataId) => {
        dataPointToRankingTable.forEach((rankTable, dataPoint)=> {
            rankTable.forEach(({rankingScore}, iso_code)=> {
-            if (bestCaseRankingTable.get(iso_code) === undefined || rankingScore > bestCaseRankingTable.get(iso_code).rankingScore) {
-                bestCaseRankingTable.delete(iso_code);
-                bestCaseRankingTable.set(iso_code, {dataset: dataId, dataPoint, rankingScore: rankingScore});
-            }
-            if (worstCaseRankingTable.get(iso_code) === undefined || rankingScore < worstCaseRankingTable.get(iso_code).rankingScore) {
-                worstCaseRankingTable.delete(iso_code);
-                worstCaseRankingTable.set(iso_code, {dataset: dataId, dataPoint, rankingScore: rankingScore});
-            }
+               if (iso_codeToRankingTable.get(iso_code) === undefined) {
+                   iso_codeToRankingTable.set(iso_code, [{score: rankingScore, dataset: dataId, dataPoint: dataPoint}]);
+               } else {
+                   iso_codeToRankingTable.get(iso_code).push({score: rankingScore, dataset: dataId, dataPoint: dataPoint});
+               }
            });
        }); 
     });
+    iso_codeToRankingTable.forEach(e => {e.sort((a,b) => {return b.score - a.score;})});
+    iso_codeToRankingTable.forEach((value, key) => {
+        let mid = value.length > 0 ? (value.length -1) / 2 : 0;
+        edgeCasesRankingTables.set(key, {best: value[0], average: (mid % 1 === 0) ? value[mid] : value[mid - 0.5], worst: value[value.length -1]});
+
+    })
     calculatedRankingCallback()
 }
 
@@ -70,12 +77,12 @@ async function calculateRankingOverDataset(world, datasetIdentifier) {
         });
         let sortedTable = new Map([...valueTable].sort((a, b) => (a[1] - b[1])));
         let rankTable = new Map()
-        let i = 1;
+        let i = (datasetInformation.moreIsBetter) ? sortedTable.size : 1;
         let normalizedArray = Array.from(sortedTable).map(e => +e[1]);
         let arrayMinMax = {min : Math.min(...normalizedArray), max : Math.max(...normalizedArray)}
         sortedTable.forEach((value, key) => {
-            let rank = i++;
-            let score = getRankingScore(value, rank, mean, sortedTable, normalizedArray, arrayMinMax);
+            let rank =  (datasetInformation.moreIsBetter) ? i-- : i++;
+            let score = getRankingScore(value, rank, mean, sortedTable, arrayMinMax, datasetInformation.moreIsBetter);
             rankTable.set(key, {rank: rank, numberOfValues: sortedTable.size, rankingScore: score});
         });
         dataPointToRankingTable.set(dataPoint, rankTable)
@@ -95,13 +102,14 @@ function normalizeArray(value, array, arrayMinMax) {
 }
 
 
-function getRankingScore(value, rank, mean, sortedTable, normalizedArray, arrayMinMax) {
+function getRankingScore(value, rank, mean, sortedTable, arrayMinMax, moreIsBetter) {
     let numberOfCountries = sortedTable.size;
     let rankPart = ((numberOfCountries*0.5)/rank)*10;
     let numberOfCountriesPart = Math.log(numberOfCountries)/Math.log(50);
     let valueDifference = normalizeArray(mean, undefined, arrayMinMax) / normalizeArray(value, undefined, arrayMinMax);
+    if (moreIsBetter) {valueDifference = 1 / valueDifference;}
     let rankScore = rankPart * numberOfCountriesPart * valueDifference;
     return rankScore;
 }
 
-export {calculateRanking, getBestCaseOfCountry, getWorstCaseOfCountry, getRankingTable}
+export {calculateRanking, getBestCaseOfCountry, getWorstCaseOfCountry, getMediumCaseOfCountry, getRankingTable}
