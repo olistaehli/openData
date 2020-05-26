@@ -8,12 +8,12 @@ import {
     Logger
 } from "./Logger.js";
 
-let datasetsInformation = [/*{
+let datasetsInformation = [{
     "src": "../data/testdata.csv",
     "title": "Testdaten",
     "units": " tonnes per capita",
     "id": "testing"
-},*/{
+}, {
         "src": "../data/co2_emissions_tonnes_per_person.csv",
         "title": "CO2 Emissions in tonnes per person",
         "units": " tonnes per capita",

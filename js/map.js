@@ -131,10 +131,19 @@ function mapTwoValueChanged() {
     }
 
     let informationContainer = document.createElement('div');
-    let titleLabel = document.createElement('h3');
+    let titleLabel = document.createElement('p');
     titleLabel.classList.add('text-center');
     titleLabel.innerText = `Currently displaying: ${datasetTitle} in ${dataPointTitle}`;
     informationContainer.appendChild(titleLabel);
+    let table = document.createElement('table');
+    table.classList.add('table', 'table-hover');
+    table.createTHead();
+    let headerRow = table.insertRow(0);
+    headerRow.insertCell(0).innerText = 'Rank';
+    headerRow.insertCell(1).innerText = 'Country Name';
+    headerRow.insertCell(2).innerText = 'Raw Value';
+    
+
     $('#worldTwoStatus').empty();
     $('#worldTwoStatus').append(informationContainer);
     //0 worst, 1 bad, 2 neutral, 3 good, 4 best

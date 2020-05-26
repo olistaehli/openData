@@ -65,14 +65,14 @@ async function calculateRankingOverDataset(world, datasetIdentifier) {
                 valueTable.set(iso_code, value.data);
             }
         });
-        let sortedTable = new Map([...valueTable].sort((a, b) => (a[1] > b[1] && 1) || (a[1] === b[1] ? 0 : -1)));
+        let sortedTable = new Map([...valueTable].sort((a, b) => (a[1] - b[1])));
         let rankTable = new Map()
         let i = 1;
         let normalizedArray = Array.from(sortedTable).map(e => +e[1]);
         let arrayMinMax = {min : Math.min(...normalizedArray), max : Math.max(...normalizedArray)}
         sortedTable.forEach((value, key) => {
             let rank = i++;
-            let score = getRankingScore(value, rank, mean, sortedTable, normalizedArray, arrayMinMax)
+            let score = getRankingScore(value, rank, mean, sortedTable, normalizedArray, arrayMinMax);
             rankTable.set(key, {rank: rank, numberOfValues: sortedTable.size, rankingScore: score});
         });
         dataPointToRankingTable.set(dataPoint, rankTable)
@@ -94,9 +94,9 @@ function normalizeArray(value, array, arrayMinMax) {
 
 function getRankingScore(value, rank, mean, sortedTable, normalizedArray, arrayMinMax) {
     let numberOfCountries = sortedTable.size;
-    let rankPart =  ((numberOfCountries*0.5)/rank)*10;
+    let rankPart = ((numberOfCountries*0.5)/rank)*10;
     let numberOfCountriesPart = Math.log(numberOfCountries)/Math.log(50);
-    let valueDifference = normalizeArray(mean, normalizedArray) / normalizeArray(value, normalizedArray);
+    let valueDifference = normalizeArray(mean, undefined, arrayMinMax) / normalizeArray(value, undefined, arrayMinMax);
     let rankScore = rankPart * numberOfCountriesPart * valueDifference;
     return rankScore;
 }
