@@ -9,6 +9,10 @@ class Logger {
             console.log(`New State: ${this.stateHandler.getStateDescription()}`);
         });
     }
+
+    static logWarning(exception) {
+        console.warn(exception.toString());
+    }
 }
 
 export {Logger}
