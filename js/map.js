@@ -74,6 +74,8 @@ function showMap(error, worldTopo, ...data) {
 }
 
 function calculatedRanking() {
+    StateHandler2.setState("Ranking made", "The ranking of the countries has been made for all the Datasets");
+    $('#select-state-loading-overlay').hide();
     $('#sliderRange').on("change", mapTwoValueChanged);
     $('#sliderRangeImages').children().each((index, element)=> {
         element.onclick = ()=> {changeSliderValueTo(index)}
