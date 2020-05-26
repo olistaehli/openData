@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Greenhouse Gas Emissions</title>
+    <title>Global Emissions Observer</title>
 
     <link href="/assets/favicon.ico" rel="shortcut icon" type="image/png" />
 
@@ -22,7 +22,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#"><b>Greenhouse Gas Emissions</b></a>
+        <a class="navbar-brand" href="#"><b>Global Emissions Observer</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -37,14 +37,13 @@
     </nav>
 
     <div class="pt-5 container">
-        <h1>Greenhouse Gas Emissions</h1>
+        <h1>Global Emissions Observer (GEO)</h1>
         <h4>A Semester Project in the open data lecture</h4>
         <p class=pt-5>This visualization was created by two students during the Open Data lecture. The project was
             conducted without a data coach. We use the data from gapminder.com, a portal that promotes factual education
             of the population through data. With our visualization we show how countries compare to each other in terms
-            of greenhouse gas emissions. The most interesting thing is that it always depends on how you look at the
-            data. For greenhouse gases in absolute numbers, the most populous country is of course the most populous,
-            China is the worst. But when you look at the figures per inhabitant, the picture looks very different. Rich
+            of emissions. The most interesting thing is that it always depends on how you look at the
+            data. For greenhouse gases in absolute numbers, the most populous country, China is the worst. But when you look at the figures per inhabitant, the picture looks very different. Rich
             countries like Switzerland, for example, are no longer in a good position. If you now look at the whole per
             capita figure in terms of gross domestic product, the rich countries are in a good position again. Our
             conclusion from this project is that data can always be chosen in a way that serves the purpose or argument
@@ -57,7 +56,7 @@
                     <div class="pb-2  text-center">
                         <img src="/assets/typeWhite.png" height="60px" width="50px">
                     </div>
-                    <h4 style="color: white;"> Explore Greenhouse Gas Emissions by Type</h4>
+                    <h4 style="color: white;"> Explore Emissions by Type</h4>
                 </div>
             </a>
             <a href="#emissionCountry">
@@ -65,7 +64,7 @@
                     <div class="pb-2 text-center">
                         <img src="/assets/countryWhite.png" height="60px" width="50px">
                     </div>
-                    <h4 style="color: white;">Explore Greenhouse Gas Emission by Country</h4>
+                    <h4 style="color: white;">Explore Emission by Country</h4>
                 </div>
             </a>
 
@@ -82,11 +81,11 @@
                         <div class="pb-2  text-center">
                             <img src="/assets/typeWhite.png" height="60px" width="50px">
                         </div>
-                        <h4>Greenhouse Gas Emissions by Type</h4>
+                        <h4>Emissions by Type</h4>
 
                         <p>
                             Click here to explore an interactive dynamic world map which shows differenet categories of
-                            greenhouse gas emissions.
+                            emissions.
                         </p>
                         <div class="text-center">
                             <button class="btn btn-secondary" type="button"><a href="#emissionType"
@@ -100,11 +99,11 @@
                         <div class="pb-2 text-center">
                             <img src="/assets/countryWhite.png" height="60px" width="50px">
                         </div>
-                        <h4>Greenhouse Gas Emission by Country</h4>
+                        <h4>Emission by Country</h4>
 
                         <p>
                             Click here to explore an interactive dynamic world map which shows you how well a specific
-                            country performs. You can analze their best and worst greenhouse gas emission category. In
+                            country performs. You can analze their best and worst emission category. In
                             addition to that you can distort the visualization to represent the country at its absolute
                             worst or best.
                         </p>
@@ -119,11 +118,11 @@
         <div class="p-4 mt-5 card databox" id="emissionType">
             <div class="m-auto row py-3 align-items-center">
                 <img src="/assets/typeColor.png" height="60px" width="50px">
-                <h2>&nbsp &nbsp CO2-Emission by Type</h2>
+                <h2>&nbsp &nbsp Emission by Type</h2>
             </div>
             <p>
                 This interactive visualization serves to understand that different countries score very differently
-                compared to each other when considering different forms and perspectives of greenhouse gas emissions
+                compared to each other when considering different forms and perspectives of emissions
             </p>
 
             <div class="text-center dropdown py-5">
@@ -151,15 +150,16 @@
             <h5>Information about data</h5>
             <p> We got our data from the world famous portal for data, Gapminder.com This platform is from bestselling
                 author Hans Rosling.
-
-                <a href="https://www.gapminder.org/data/">Link to the data</a>
+                <a href="https://www.gapminder.org/data/"><b><u>Link to the data</u></b></a>
+                <br><i><b>Disclaimer:</b> We would like to point out that the calculations for the visualizations are not perfect but sufficiently good due to the performance optimization. That means for reliable data you should use the original data from Gapminder.</i>
+                
             </p>
         </div>
         <div class="p-4 mt-5 card databox" id="emissionCountry">
 
             <div class="m-auto row py-3 align-items-center">
                 <img src="/assets/countryColor.png" height="60px" width="50px">
-                <h2>&nbsp &nbsp CO2-Emission by Country</h2>
+                <h2>&nbsp &nbsp Emission by Country</h2>
 
 
 
@@ -171,12 +171,6 @@
             </p>
             <span class="quote">
                 <b>“If you torture the data long enough, it will confess to anything."</b>
-            </span>
-            <p>
-                With this tool we strongly recommend the well-known statement of Winston S. Churchill:
-            </p>
-            <span class="quote">
-                <b>“I only believe in statistics that I doctored myself”.</b>
             </span>
             <p>
                 Please choose any country and you will see the difference it can make when picking certain data and
@@ -326,8 +320,9 @@
         <div class="infobox p-4 my-3 card">
             <h5>Information about data</h5>
             <p> We got our data from the world famous portal for data, Gapminder.com This platform is from bestselling
-                author Hans Rosling.
-                <a href="https://www.gapminder.org/data/">Link to the data</a>
+                author Hans Rosling. 
+                <a href="https://www.gapminder.org/data/"><b><u>Link to the data</u></b></a>
+                <br><i><b>Disclaimer:</b> We would like to point out that the calculations for the visualizations are not perfect but sufficiently good due to the performance optimization. That means for reliable data you should use the original data from Gapminder.</i>
             </p>
         </div>
 
@@ -350,13 +345,13 @@
                 </div>
                 <div class="modal-body">
                     <p><b>Devil:</b> We took the data from the category 'bad' and manipulated it with statistical tricks
-                        (e.g. exchanged scale from linear to logarithmic) to make it look worse.</p>
+                         to make it look worse.</p>
                     <p><b>Dislike:</b> This shows the category where the selected country is performing the worst.</p>
-                    <p><b>Neutral:</b> This shows the greenhose-gas emissions as ethically correct as we were able to
+                    <p><b>Neutral:</b> This shows the emissions as ethically correct as we were able to
                         present it, according to our understanding.</p>
                     <p><b>Like:</b> This shows the category where the selected country is performing the best.</p>
                     <p><b>Unicorn:</b> We took the data from the category 'good' and manipulated it with statistical
-                        tricks (e.g. exchanged scale from linear to logarithmic) to make it look better.</p>
+                        tricks to make it look better.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

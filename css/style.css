@@ -132,6 +132,21 @@ h1, h4, h5, h6, h3 {
 background: linear-gradient(0deg, rgba(9,9,121,1) 0%, rgba(142,36,170,1) 42%);
 }
 
+.redGradient{
+    background: rgb(150,0,41);
+background: linear-gradient(0deg, rgba(150,0,41,1) 0%, rgba(254,86,84,1) 100%);
+}
+
+.greenGradient{
+    background: rgb(169,215,8);
+background: linear-gradient(180deg, rgba(169,215,8,1) 0%, rgba(36,148,1,1) 100%);
+}
+
+.orangeGradient{
+    background: rgb(222,85,5);
+background: linear-gradient(0deg, rgba(222,85,5,1) 0%, rgba(255,179,0,1) 100%);
+}
+
 .animation-control {
   border: 0;
   background: transparent;
@@ -154,8 +169,6 @@ background: linear-gradient(0deg, rgba(9,9,121,1) 0%, rgba(142,36,170,1) 42%);
 .animation-control:hover {
   border-color: transparent transparent transparent #404040;
 }
-
-
 ::placeholder, ::-webkit-input-placeholder, :-ms-input-placeholder {
   color: white;
   opacity: 1;
@@ -239,4 +252,8 @@ background: linear-gradient(0deg, rgba(9,9,121,1) 0%, rgba(142,36,170,1) 42%);
   } 100%, 0% {
     transform: scale(1.0); 
   } 
+}
+
+body {
+  font-family: Roboto, Helvetica, sans-serif;
 }
