@@ -62,16 +62,35 @@ $('#dropdownTwoParent').on('hidden.bs.dropdown', function () {
 });
 
 $( window ).resize(function() {
-    let width = d3.select("#worldOne").node().getBoundingClientRect().width;
-    let height = d3.select("#worldOne").node().getBoundingClientRect().height;
+    width = d3.select("#worldOne").node().getBoundingClientRect().width;
+    height = d3.select("#worldOne").node().getBoundingClientRect().height;
     for (let propertyName in cartograms) {
         try {
             cartograms[propertyName]
                 .width(width)
-                .height(height)
+                .height(height);  
         } catch { console.warn('Tried to resize an object that is not a cartogram'); }
     }
+    debounce(resizeProjection, 100);
 });
+
+function resizeProjection() {
+    for (let propertyName in cartograms) {
+            cartograms[propertyName]
+                .projection()
+                .fitSize([width, height], topojson.feature(world, world.objects.countries));
+            d3.select(`#${propertyName}`).select('svg').call(d3.zoom().transform, d3.zoomIdentity);
+            d3.select(`#${propertyName}`).select('svg').selectAll('path').attr('transform', '');
+    }
+}
+
+function debounce(fun, mil){
+    var timer; 
+    clearTimeout(timer); 
+    timer = setTimeout(function(){
+        fun(); 
+    }, mil); 
+}
 
 function showMap(error, worldTopo, ...data) {
     StateHandler.setState('Displaying the map', 'Displaing a map without any data');
@@ -166,6 +185,8 @@ function createEmptyMapOn(htmlId) {
     .width(width)
     .height(height)
     (document.getElementById(htmlId));
+    console.log(d3.topoJson);
+    cartograms[htmlId].projection().fitSize([width, height], topojson.feature(world, world.objects.countries));
 
     d3.select(`#${htmlId}`).select('svg').call(d3.zoom().scaleExtent([0.25,8]).on("zoom", function() {
         d3.select(`#${htmlId}`).select('svg').selectAll('path').attr("transform", d3.event.transform);
