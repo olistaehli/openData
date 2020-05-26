@@ -149,13 +149,19 @@ function mapTwoValueChanged() {
             break;
     }
 
-    let informationContainer = createStatusTable(datasetId, dataPointTitle, selectedCountry);
+    let informationContainer = createStatusTable(datasetId, dataPointTitle, selectedCountry, StateHandler2);
 
     $('#worldTwoStatus').empty();
     $('#worldTwoStatus').append(informationContainer);
 }
 
-function createStatusTable(datasetId, dataPointTitle, selectedCountry) {
+function updateStatusTableMapOne(datasetId, dataPointTitle) {
+    let informationContainer = createStatusTable(datasetId, dataPointTitle, undefined, StateHandler1);
+    $('#worldOneStatus').empty();
+    $('#worldOneStatus').append(informationContainer);
+}
+
+function createStatusTable(datasetId, dataPointTitle, selectedCountry, stateHandler) {
     let informationContainer = document.createElement('div');
     let titleLabel = document.createElement('p');
     titleLabel.classList.add('text-center');
@@ -171,9 +177,9 @@ function createStatusTable(datasetId, dataPointTitle, selectedCountry) {
         let row = table.insertRow(-1);
         row.insertCell(0).innerText = country.rank;
         row.insertCell(1).innerText = countryObj.properties.NAME;
-        row.insertCell(2).innerText = getDataOfCountry(countryObj, StateHandler2);
+        row.insertCell(2).innerText = getDataOfCountry(countryObj, stateHandler);
 
-        if (selectedCountry.properties.ADM0_A3 == countryObj.properties.ADM0_A3) {
+        if (selectedCountry !== undefined && selectedCountry.properties.ADM0_A3 == countryObj.properties.ADM0_A3) {
             row.style.backgroundColor = getComputedStyle(document.documentElement)
                 .getPropertyValue('--darkbeige-color');
         }
@@ -194,7 +200,6 @@ function createStatusTable(datasetId, dataPointTitle, selectedCountry) {
     informationContainer.appendChild(titleLabel);
     informationContainer.appendChild(tableContainer);
     return informationContainer;
-
 }
 
 function mapWithoutData() {
@@ -289,35 +294,18 @@ function changeDataSetTo(id, map) {
         stateHandler.changeDisplayedDataset({dataset: dataInformation.id});
     }
 
-    let currentDatapoint = stateHandler.getCurrentDisplayedDatapoint();
-    let selectedDatapointInformation = dataInformation[currentDatapoint];
-    var scale = d3.scaleLinear()
-        .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')])
-        .range([1,  1000]);
-    const colorScale = d3.scaleSequential(d3.interpolatePlasma)
-    .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
-    cartograms[map]
-        .value((feature) => scale(getDataOfCountry(feature, stateHandler)))
-        .color((f) => {
-        if (f.properties[stateHandler.getCurrentDisplayedDataset()][stateHandler.getCurrentDisplayedDatapoint()].isFillValue) {return "lightgrey"}
-        return colorScale(getDataOfCountry(f, stateHandler))})
-        .units(selectedDatapointInformation.units)
-        .label(({properties: p}) => `${p.NAME}`)
-        .valFormatter(n => {
-            console.log(n);
-            return n;
-        }).tooltipContent((e)=>{
-            return e.properties[stateHandler.getCurrentDisplayedDataset()][stateHandler.getCurrentDisplayedDatapoint()].data;
-        })
-        .iterations(60);
-
-    stateHandler.setState('Displaying the map', `Displaying the map for ${dataInformation.title} in the year ${currentDatapoint}`);
+    showNewCartogram(map, stateHandler);
     
     updateYearPicker(stateHandler);
+    
 }
 
 function changeDatapointTo(col, stateHandler) {
     stateHandler.changeDisplayedDataset({datapoint: col});
+    showNewCartogram(stateHandler === StateHandler1 ? "worldOne" : "worldTwo", stateHandler);
+}
+
+function showNewCartogram(map, stateHandler) {
     let currentData = getDataById(stateHandler.getCurrentDisplayedDataset());
     let dataInformation = currentData.information;
     let currentDatapoint = stateHandler.getCurrentDisplayedDatapoint();
@@ -327,7 +315,7 @@ function changeDatapointTo(col, stateHandler) {
         .range([1,  1000]);
     const colorScale = d3.scaleSequential(d3.interpolatePlasma)
         .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
-    let cartogram = cartograms[stateHandler === StateHandler1 ? "worldOne" : "worldTwo"];
+    let cartogram = cartograms[map];
     cartogram
         .value((feature) => scale(getDataOfCountry(feature, stateHandler)))
         .color((f) => {
@@ -336,6 +324,10 @@ function changeDatapointTo(col, stateHandler) {
         .units(selectedDatapointInformation.units)
         .label(({properties: p}) => `${p.NAME}`)
         .valFormatter(n => n)
-        .iterations(60);
+        .iterations(40);
     stateHandler.setState('Displaying the map', `Displaying the map for ${dataInformation.title} in the year ${currentDatapoint}`)
+
+    if (stateHandler === StateHandler1) {
+        updateStatusTableMapOne(currentData.information.id, currentDatapoint);
+    }
 }
