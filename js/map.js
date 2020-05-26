@@ -14,7 +14,7 @@ import { getBestCaseOfCountry, getWorstCaseOfCountry} from './Ranking.js';
 let cartograms = {};
 let world;
 let width = d3.select("#worldOne").node().getBoundingClientRect().width;
-let height = d3.select("#worldTwo").node().getBoundingClientRect().height;
+let height = d3.select("#worldOne").node().getBoundingClientRect().height;
 
 // Create two instances of the Statehandler
 let StateHandler1 = StateHandler.getNewStateHandler("map1");
@@ -58,7 +58,19 @@ $('#dropdownTwoParent').on('hidden.bs.dropdown', function () {
     allSelections.forEach((selection) => {
         selection.classList.remove('d-none');
     });
-  })
+});
+
+$( window ).resize(function() {
+    let width = d3.select("#worldOne").node().getBoundingClientRect().width;
+    let height = d3.select("#worldOne").node().getBoundingClientRect().height;
+    for (let propertyName in cartograms) {
+        try {
+            cartograms[propertyName]
+                .width(width)
+                .height(height)
+        } catch { console.warn('Tried to resize an object that is not a cartogram'); }
+    }
+});
 
 function showMap(error, worldTopo, ...data) {
     StateHandler.setState('Displaying the map', 'Displaing a map without any data');
