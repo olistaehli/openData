@@ -1,6 +1,7 @@
 import {
     createQueue,
     getDataById,
+    getDataPoints,
     getTitleById,
     loadEmptyMap
 } from './loadData.js'; 
@@ -265,7 +266,7 @@ function initializeDropDown(map, data) {
 
 function updateYearPicker(stateHandler) {
     if (stateHandler !== StateHandler1) return
-    let columns = getDataById(stateHandler.getCurrentDisplayedDataset()).columns;
+    let columns = getDataPoints(getDataById(stateHandler.getCurrentDisplayedDataset()));
     let cartogram = cartograms[stateHandler === StateHandler1 ? "worldOne" : "worldTwo"];
     MapControl.newSlider(columns,(col) =>  changeDatapointTo(col, stateHandler));
     MapControl.newAnimationControlButtons({step: () => {
