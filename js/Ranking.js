@@ -48,7 +48,7 @@ async function calculateWorstAndBestRanks(calculatedRankingCallback){
     iso_codeToRankingTable.forEach(e => {e.sort((a,b) => {return b.score - a.score;})});
     iso_codeToRankingTable.forEach((value, key) => {
         let mid = value.length > 0 ? (value.length -1) / 2 : 0;
-        edgeCasesRankingTables.set(key, {unicorn: value[0], like: iso_codeToLastRankingTable.get(key)[0], average: (mid % 1 === 0) ? value[mid] : value[mid - 0.5], dislike: iso_codeToLastRankingTable.get(key)[0], devil: value[value.length -1]});
+        edgeCasesRankingTables.set(key, {unicorn: value[0], like: iso_codeToLastRankingTable.get(key)[0], average: (mid % 1 === 0) ? value[mid] : value[mid - 0.5], dislike: iso_codeToLastRankingTable.get(key)[iso_codeToLastRankingTable.get(key).length -1 ], devil: value[value.length -1]});
 
     })
     calculatedRankingCallback()
