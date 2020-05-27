@@ -3,18 +3,9 @@ import { getDataPoints, getDataById } from "./loadData.js";
 let allRankingTables = new Map();
 let edgeCasesRankingTables = new Map();
 
-function getBestCaseOfCountry(iso_code) {
+function getStageOfCountry(iso_code, state) {
     // {dataset: dataId, dataPoint, rankingScore: rankingScore}
-    return edgeCasesRankingTables.get(iso_code).best;
-}
-
-function getWorstCaseOfCountry(iso_code) {
-    // {dataset: dataId, dataPoint, rankingScore: rankingScore}
-    return edgeCasesRankingTables.get(iso_code).worst;
-}
-
-function getMediumCaseOfCountry(iso_code) {
-    return edgeCasesRankingTables.get(iso_code).average;
+    return edgeCasesRankingTables.get(iso_code)[state];
 }
 
 async function calculateRanking(world, calculatedRankingCallback, ...dataIds) {
@@ -32,7 +23,17 @@ async function calculateRanking(world, calculatedRankingCallback, ...dataIds) {
 
 async function calculateWorstAndBestRanks(calculatedRankingCallback){
     let iso_codeToRankingTable = new Map();
+    let iso_codeToLastRankingTable = new Map();
     allRankingTables.forEach((dataPointToRankingTable, dataId) => {
+       let lastDataPointRankingTable = Array.from(dataPointToRankingTable)[dataPointToRankingTable.size -1];
+        lastDataPointRankingTable[1].forEach(({rankingScore}, iso_code)=> {
+            let dataPoint = lastDataPointRankingTable[0];
+            if (iso_codeToLastRankingTable.get(iso_code) === undefined) {
+                iso_codeToLastRankingTable.set(iso_code, [{score: rankingScore, dataset: dataId, dataPoint: dataPoint}]);
+            } else {
+                iso_codeToLastRankingTable.get(iso_code).push({score: rankingScore, dataset: dataId, dataPoint: dataPoint});
+            }
+        });
        dataPointToRankingTable.forEach((rankTable, dataPoint)=> {
            rankTable.forEach(({rankingScore}, iso_code)=> {
                if (iso_codeToRankingTable.get(iso_code) === undefined) {
@@ -43,10 +44,11 @@ async function calculateWorstAndBestRanks(calculatedRankingCallback){
            });
        }); 
     });
+    iso_codeToLastRankingTable.forEach(e => {e.sort((a,b) => {return b.score - a.score;})});
     iso_codeToRankingTable.forEach(e => {e.sort((a,b) => {return b.score - a.score;})});
     iso_codeToRankingTable.forEach((value, key) => {
         let mid = value.length > 0 ? (value.length -1) / 2 : 0;
-        edgeCasesRankingTables.set(key, {best: value[0], average: (mid % 1 === 0) ? value[mid] : value[mid - 0.5], worst: value[value.length -1]});
+        edgeCasesRankingTables.set(key, {unicorn: value[0], like: iso_codeToLastRankingTable.get(key)[0], average: (mid % 1 === 0) ? value[mid] : value[mid - 0.5], dislike: iso_codeToLastRankingTable.get(key)[0], devil: value[value.length -1]});
 
     })
     calculatedRankingCallback()
@@ -107,9 +109,12 @@ function getRankingScore(value, rank, mean, sortedTable, arrayMinMax, moreIsBett
     let rankPart = ((numberOfCountries*0.5)/rank)*10;
     let numberOfCountriesPart = Math.log(numberOfCountries)/Math.log(50);
     let valueDifference = normalizeArray(mean, undefined, arrayMinMax) / normalizeArray(value, undefined, arrayMinMax);
+    if (Number.isNaN(valueDifference)) {
+        valueDifference = 1;
+    }
     if (moreIsBetter) {valueDifference = 1 / valueDifference;}
     let rankScore = rankPart * numberOfCountriesPart * valueDifference;
     return rankScore;
 }
 
-export {calculateRanking, getBestCaseOfCountry, getWorstCaseOfCountry, getMediumCaseOfCountry, getRankingTable}
+export {calculateRanking, getStageOfCountry, getRankingTable}

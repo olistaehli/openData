@@ -9,7 +9,7 @@ import {
 } from './MapControls.js';
 import { StateHandler } from './StateHandler.js';
 import { Logger } from './Logger.js';
-import { getBestCaseOfCountry, getWorstCaseOfCountry, getMediumCaseOfCountry, getRankingTable} from './Ranking.js';
+import { getStageOfCountry, getRankingTable} from './Ranking.js';
 
 
 let cartograms = {};
@@ -126,33 +126,28 @@ function mapTwoValueChanged() {
     if (selectedCountry === undefined) { return }
     let iso_code = selectedCountry.properties.ADM0_A3;
     let datasetId, dataPointTitle;
+    let stage;
     switch (+$("#sliderRange").val()) {
         case 0:
+            stage = getStageOfCountry(iso_code, "devil");
+            break;
         case 1:
-            //{dataset: dataId, dataPoint, rankingScore: rankingScore}
-            let worstCase = getWorstCaseOfCountry(iso_code);
-            changeDataSetTo(worstCase.dataset, "worldTwo");
-            changeDatapointTo(worstCase.dataPoint, StateHandler2);
-            datasetId = worstCase.dataset;
-            dataPointTitle = worstCase.dataPoint;
+            stage = getStageOfCountry(iso_code, "dislike");
             break;
         case 3:
+            stage = getStageOfCountry(iso_code, "like");
+            break;
         case 4:
-            //{dataset: dataId, dataPoint, rankingScore: rankingScore}
-            let bestCase = getBestCaseOfCountry(iso_code);
-            changeDataSetTo(bestCase.dataset, "worldTwo");
-            changeDatapointTo(bestCase.dataPoint, StateHandler2);
-            datasetId = bestCase.dataset;
-            dataPointTitle = bestCase.dataPoint;
+            stage = getStageOfCountry(iso_code, "unicorn")
             break;
         case 2:
         default:
-            let averageCase = getMediumCaseOfCountry(iso_code);
-            changeDataSetTo(averageCase.dataset, "worldTwo");
-            changeDatapointTo(averageCase.dataPoint, StateHandler2);
-            datasetId = averageCase.dataset;
-            dataPointTitle = averageCase.dataPoint;
+            stage = getStageOfCountry(iso_code, "average");
     }
+    changeDataSetTo(stage.dataset, "worldTwo");
+    changeDatapointTo(stage.dataPoint, StateHandler2);
+    datasetId = stage.dataset;
+    dataPointTitle = stage.dataPoint;
 
     let informationContainer = createStatusTable(datasetId, dataPointTitle, selectedCountry, StateHandler2);
 
@@ -326,9 +321,13 @@ function showNewCartogram(map, stateHandler) {
         .color((f) => {
         if (f.properties[stateHandler.getCurrentDisplayedDataset()][stateHandler.getCurrentDisplayedDatapoint()].isFillValue) {return "lightgrey"}
         return colorScale(getDataOfCountry(f, stateHandler))})
-        .units(selectedDatapointInformation.units)
+        .units('')
         .label(({properties: p}) => `${p.NAME}`)
         .valFormatter(n => n)
+        .tooltipContent((f) => { 
+            if (f.properties[stateHandler.getCurrentDisplayedDataset()][stateHandler.getCurrentDisplayedDatapoint()].isFillValue) {return `No data available\n<br>Filled with the mean of the available data: ${numberRoundDecimal(selectedDatapointInformation.get('mean'), 4)} ${dataInformation.units}}`} 
+            return `${numberRoundDecimal(getDataOfCountry(f, stateHandler), 4)} ${dataInformation.units}`;
+        })
         .iterations(40);
     stateHandler.setState('Displaying the map', `Displaying the map for ${dataInformation.title} in the year ${currentDatapoint}`)
 
@@ -336,3 +335,7 @@ function showNewCartogram(map, stateHandler) {
         updateStatusTableMapOne(currentData.information.id, currentDatapoint);
     }
 }
+
+function numberRoundDecimal(v,n) {
+    return Math.round((v+Number.EPSILON)*Math.pow(10,n))/Math.pow(10,n)}
+   
