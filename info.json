@@ -1,0 +1,11 @@
+{
+"title": "Global Emissions Observer (GEO)",
+"description": "Dies ist eine Kartenanamorphote welche die Emissionen der verschiedenen Nationen dynamisch in Vergleich stellt. Das Projekt besteht aus zwei Teilen. Im ersten Teil kann man eine Emissionsart wählen, z.B. Kohlenstoffdioxid-Emissionen im Vergleich zum BIP und sich die Veränderung über die Jahre ansehen. Der zweite Teil soll Aufmerksamkeit auf die Manipulierbarkeit von Daten richten. Man kann ein Land wählen und mit einem Slider auswählen ob das Land ein neutrales, negatives oder positives Ergebnis bzgl. Emissionen erreichen soll.",
+"authors": [
+    {"name": "Adrian Joerg", "email": "adrian.joerg@students.unibe.ch"},
+    {"name": "Olivier Staehli", "email": "olivier.staehli@students.unibe.ch"}
+],
+"date": "2020-05-28",
+"category": "environment",
+"software_license": "MIT"
+}
