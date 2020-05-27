@@ -314,8 +314,10 @@ function showNewCartogram(map, stateHandler) {
     var scale = d3.scaleLinear()
         .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')])
         .range([1,  1000]);
-    const colorScale = d3.scaleSequential(d3.interpolatePlasma)
+    var colorScale = d3.scaleSequential(d3.interpolatePlasma)
         .domain([selectedDatapointInformation.get('min'), selectedDatapointInformation.get('max')]);
+    
+    
     let cartogram = cartograms[map];
     cartogram
         .value((feature) => scale(getDataOfCountry(feature, stateHandler)))
@@ -324,7 +326,7 @@ function showNewCartogram(map, stateHandler) {
         return colorScale(getDataOfCountry(f, stateHandler))})
         .units('')
         .label(({properties: p}) => `${p.NAME}`)
-        .valFormatter(n => n)
+        .valFormatter(n => '')
         .tooltipContent((f) => { 
             if (f.properties[stateHandler.getCurrentDisplayedDataset()][stateHandler.getCurrentDisplayedDatapoint()].isFillValue) {return `No data available\n<br>Filled with the mean of the available data: ${numberRoundDecimal(selectedDatapointInformation.get('mean'), 4)} ${dataInformation.units}}`} 
             return `${numberRoundDecimal(getDataOfCountry(f, stateHandler), 4)} ${dataInformation.units}`;
