@@ -120,7 +120,7 @@ function changeSliderValueTo(number) {
     mapTwoValueChanged();
 }
 
-function mapTwoValueChanged() {
+function mapTwoValueChanged(showAll = false) {
     let country = $("#datasetDropdownMapTwo").val().toLowerCase();
     let allCountries = world.objects.countries.geometries;
     let selectedCountry = allCountries.find(e => {return e.properties.NAME.toLowerCase() == country});
@@ -128,8 +128,10 @@ function mapTwoValueChanged() {
     let iso_code = selectedCountry.properties.ADM0_A3;
     let datasetId, dataPointTitle;
     let stage;
+    let skew = 0;
     switch (+$("#sliderRange").val()) {
         case 0:
+            if (!showAll) { skew = -1; }
             stage = getStageOfCountry(iso_code, "devil");
             break;
         case 1:
@@ -139,6 +141,7 @@ function mapTwoValueChanged() {
             stage = getStageOfCountry(iso_code, "like");
             break;
         case 4:
+            if (!showAll) { skew = 1; }
             stage = getStageOfCountry(iso_code, "unicorn")
             break;
         case 2:
@@ -150,7 +153,7 @@ function mapTwoValueChanged() {
     datasetId = stage.dataset;
     dataPointTitle = stage.dataPoint;
 
-    let informationContainer = createStatusTable(datasetId, dataPointTitle, selectedCountry, StateHandler2);
+    let informationContainer = createStatusTable(datasetId, dataPointTitle, selectedCountry, StateHandler2, skew);
 
     $('#worldTwoStatus').empty();
     $('#worldTwoStatus').append(informationContainer);
@@ -162,7 +165,7 @@ function updateStatusTableMapOne(datasetId, dataPointTitle) {
     $('#worldOneStatus').append(informationContainer);
 }
 
-function createStatusTable(datasetId, dataPointTitle, selectedCountry, stateHandler) {
+function createStatusTable(datasetId, dataPointTitle, selectedCountry, stateHandler, skew = 0) {
     let informationContainer = document.createElement('div');
     let titleLabel = document.createElement('p');
     titleLabel.classList.add('text-center');
@@ -172,8 +175,16 @@ function createStatusTable(datasetId, dataPointTitle, selectedCountry, stateHand
     tableContainer.style.overflowY = "auto";
     let table = document.createElement('table');
     table.classList.add('table', 'table-hover');
-    let countries = getRankingTable(datasetId, dataPointTitle);
-    countries.forEach((country, key) => {
+    let countries = Array.from(getRankingTable(datasetId, dataPointTitle));
+    countries.sort((a,b)=> {return a[1].rank - b[1].rank});
+    countries.every((keyValuePair, index) => {
+        if (skew == -1) {
+            if (index > 9) { return false; }
+        } else if (skew == 1) {
+            if (index < countries.length - 10) { return true; }
+        }
+        let key = keyValuePair[0];
+        let country = keyValuePair[1];
         let countryObj = world.objects.countries.geometries.find((e)=> {return e.properties.ADM0_A3 == key})
         let row = table.insertRow(-1);
         row.insertCell(0).innerText = country.rank;
@@ -184,7 +195,29 @@ function createStatusTable(datasetId, dataPointTitle, selectedCountry, stateHand
             row.style.backgroundColor = getComputedStyle(document.documentElement)
                 .getPropertyValue('--darkbeige-color');
         }
+        return true;
     });
+
+    if (skew !== 0) {
+        let showAll = table.insertRow(skew == -1 ? -1 : 0);
+        let cell = showAll.insertCell(0);
+        cell.colSpan = 3;
+        let link = document.createElement('a');
+        link.onclick = ()=> { mapTwoValueChanged(true); }
+        link.classList.add('darklink');
+        link.innerText = "Show more";
+        cell.style.textAlign = "center";
+        cell.appendChild(link);
+        //Add Selected Country to the end of the list with a show more button
+        let rank = countries.find((e) => { return e[0] == selectedCountry.properties.ADM0_A3})[1].rank;
+        let row = table.insertRow(skew == -1 ? -1 : 0);
+        row.insertCell(0).innerText = rank;
+        row.insertCell(1).innerText = selectedCountry.properties.NAME;
+        row.insertCell(2).innerText = getDataOfCountry(selectedCountry, stateHandler);
+        row.style.backgroundColor = getComputedStyle(document.documentElement)
+                .getPropertyValue('--darkbeige-color');
+
+    }
     
     let head = table.createTHead();
     let headerRow = head.insertRow(0);

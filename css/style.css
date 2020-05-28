@@ -38,6 +38,11 @@ h4 {
     color: white;
 }
 
+a.darklink {
+  color: #007bff !important;
+  cursor: pointer !important;
+}
+
 .exploreBox {
     background: transparent;
     color: white;
