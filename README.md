@@ -20,7 +20,6 @@
 
 ## 📝 Table of Contents
 
-- [📝 Table of Contents](#-table-of-contents)
 - [🧐 About <a name = "about"></a>](#-about)
 - [🏁 Extend the project <a name = "getting_started"></a>](#-extend-the-project)
   - [Add a new Dataset <a name = "new_data_set"></a>](#add-a-new-dataset)
