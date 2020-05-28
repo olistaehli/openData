@@ -20,8 +20,8 @@
 
 ## 📝 Table of Contents
 
-- [🧐 About](#-about)
-- [🏁 Extend the project](#-extend-the-project)
+- [🧐 About](#about)
+- [🏁 Extend the project](#extend-the-project)
   - [Add a new Dataset ](#new-dataset)
   - [Change the ranking system](#change-the-ranking-system)
 - [⛏️ Built Using](#️-built-using)
@@ -31,7 +31,7 @@
 The project displays data from gapminder.com as an area cartogram. Here you can select a category, out of which all relate in some form to the emissions of a country.
  The most interesting thing is that it always depends on how you look at the data. For greenhouse gases in absolute numbers, the most populous country, China is the worst. But when you look at the figures per inhabitant, the picture looks very different. Rich countries like Switzerland, for example, are no longer in a good position. If you now look at the whole per capita figure in terms of gross domestic product, the rich countries are in a good position again. Our conclusion from this project is that data can always be chosen in a way that serves the purpose or argument that is needed. 
 
-## 🏁 Extend the project <a name = "getting_started"></a>
+## 🏁 Extend the project <a name = "extend-the-project"></a>
 
 To adapt the project for your needs you need to clone it to a local repository and make the changes there. You then can upload it to a webserver where you can see your new project. 
 
