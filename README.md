@@ -20,9 +20,10 @@
 
 ## 📝 Table of Contents
 
-- [🧐 About](#about)
-- [🏁 Extend the project](#extend-the-project)
-  - [Add a new Dataset ](#new-dataset)
+- [📝 Table of Contents](#-table-of-contents)
+- [🧐 About](#-about)
+- [🏁 Extend the project <a name = "extend-the-project"></a>](#-extend-the-project)
+  - [Add a new Dataset](#add-a-new-dataset)
   - [Change the ranking system](#change-the-ranking-system)
 - [⛏️ Built Using](#️-built-using)
 - [✍️ Authors](#️-authors)
@@ -35,7 +36,7 @@ The project displays data from gapminder.com as an area cartogram. Here you can 
 
 To adapt the project for your needs you need to clone it to a local repository and make the changes there. You then can upload it to a webserver where you can see your new project. 
 
-### Add a new Dataset <a name = "new_data_set"></a>
+### Add a new Dataset
 
 1. Add the `.csv` file to the `data` folder. The file should be formatted such that the first row are all the years of the dataset and the first column is the country's name.
 1. Then extend the `loadData.js` in the `js` folder.
@@ -70,7 +71,7 @@ with the normalized Mean and Value are calculated the following way:
  If the dataset is a dataset, where a bigger value is better the last part of the formula is inverted.
  This formula can be customized in the `Ranking.js` file, which is located in the `js` folder. The score calculation is made in the method `getRankingScore`, so at best you only customize this. 
 
-## ⛏️ Built Using <a name = "built_using"></a>
+## ⛏️ Built Using
 
 - <a href="https://d3js.org/" >D3.js (v4) </a>
 - <a href="https://jquery.com/" >jQuery </a>
@@ -79,7 +80,7 @@ with the normalized Mean and Value are calculated the following way:
 - <a href="https://github.com/vasturiano/cartogram-chart"> Cartogram Chart</a>
 - <a href="https://unpkg.com/d3-simple-slider"> d3 Simple Slider </a>
 
-## ✍️ Authors <a name = "authors"></a>
+## ✍️ Authors
 
 -  Adrian Joerg (<a style="color: black;"
                 href="mailto:adrian.joerg@students.unibe.ch">adrian.joerg@students.unibe.ch</a>) 
